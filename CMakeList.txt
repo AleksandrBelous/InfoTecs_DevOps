@@ -1,0 +1,68 @@
+cmake_minimum_required(VERSION 3.15)
+project(sqlite3 LANGUAGES C)
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  Опции сборки
+# ──────────────────────────────────────────────────────────────────────────────
+# BUILD_SHARED_LIBS — стандартная переменная CMake, которая определяет,
+# будет ли собираться динамическая (SHARED) или статическая (STATIC) библиотека.
+# По заданию нам нужна именно динамическая, поэтому значение по‑умолчанию — ON.
+option(BUILD_SHARED_LIBS "Build shared (dynamic) library" ON)
+
+# Дополнительные возможности SQLite, которые могут пригодиться.
+option(SQLITE_ENABLE_FTS5  "Enable FTS5 full‑text search module" ON)
+option(SQLITE_ENABLE_JSON1 "Enable JSON1 extension"              ON)
+option(SQLITE_ENABLE_RTREE "Enable R*Tree spatial index"         ON)
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  Исходники библиотеки
+# ──────────────────────────────────────────────────────────────────────────────
+set(SQLITE_SOURCES sqlite3.c)
+
+add_library(sqlite3 SHARED ${SQLITE_SOURCES})
+
+# Путь к заголовочным файлам (sqlite3.h, sqlite3ext.h) раскрываем наружу,
+# чтобы "find_package(sqlite3)" в чужих проектах мог использовать include‑директорию.
+# BUILD_INTERFACE — путь, когда библиотека собирается *внутри* текущего дерева,
+# INSTALL_INTERFACE — путь после установки ("make install").
+target_include_directories(sqlite3
+    PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:include>
+)
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  Платформенные настройки компилятора
+# ──────────────────────────────────────────────────────────────────────────────
+if (MSVC)
+    # __declspec(dllexport) сообщает MSVC экспортировать символы наружу в DLL
+    target_compile_definitions(sqlite3 PRIVATE SQLITE_API=__declspec(dllexport))
+    # Экспортировать *все* символы, без DEF‑файла
+    set_target_properties(sqlite3 PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
+else()
+    # -fPIC («Position Independent Code») обязательно для .so
+    target_compile_options(sqlite3 PRIVATE -fPIC)
+    set_target_properties(sqlite3 PROPERTIES POSITION_INDEPENDENT_CODE ON)
+endif()
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  Дополнительные ключи препроцессора SQLite
+# ──────────────────────────────────────────────────────────────────────────────
+if (SQLITE_ENABLE_FTS5)
+    target_compile_definitions(sqlite3 PRIVATE SQLITE_ENABLE_FTS5)
+endif()
+if (SQLITE_ENABLE_JSON1)
+    target_compile_definitions(sqlite3 PRIVATE SQLITE_ENABLE_JSON1)
+endif()
+if (SQLITE_ENABLE_RTREE)
+    target_compile_definitions(sqlite3 PRIVATE SQLITE_ENABLE_RTREE)
+endif()
+
+# ──────────────────────────────────────────────────────────────────────────────
+#  Установка (make install)
+# ──────────────────────────────────────────────────────────────────────────────
+install(TARGETS sqlite3
+        RUNTIME DESTINATION bin           # .dll на Windows
+        LIBRARY DESTINATION lib           # .so  на Linux
+        ARCHIVE DESTINATION lib)          # .a   при STATIC
+install(FILES sqlite3.h sqlite3ext.h DESTINATION include)
