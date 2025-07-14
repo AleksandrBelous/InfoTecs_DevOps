@@ -1,3 +1,4 @@
 /.idea/
 *.o
 *.so
+/sqlite-amalgamation-3260000/sqlite3
