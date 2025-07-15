@@ -44,3 +44,21 @@ gcc shell.c -I ./ -L ./ -lsqlite3 -lpthread -ldl -lm -o sqlite3
 
 Добавим -Wl,-rpath,'$ORIGIN', что говорит динамическому загрузчику искать .so в том же каталоге, где и бинарник.
 При этом $ORIGIN подставляется загрузчиком на лету.
+
+gcc -fPIC -shared sqlite3.c -lpthread -ldl -lm -o libsqlite3.so
+gcc shell.c -I ./ -L ./ -lsqlite3 -lpthread -ldl -lm -Wl,-rpath,'$ORIGIN' -o sqlite3
+./sqlite3 -batch <<< 'select sqlite_version();'
+3.26.0
+
+Получилось. Теперь ещё одним способом проверим, что на этапе запуска линкуется именно наш собранный .so
+
+ldd ./sqlite3 | grep libsqlite3.so
+libsqlite3.so => /home/USER/InfoTecs/sqlite-amalgamation-3260000/./libsqlite3.so (0x00007fc771a8d000)
+
+Наша библиотека подгружается, отлично.
+Проверим работу sqlite3
+
+printf 'select 2+2;' | ./sqlite3 -batch
+4
+
+Работает корректно.
