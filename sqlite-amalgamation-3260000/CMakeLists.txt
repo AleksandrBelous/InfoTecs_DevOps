@@ -49,7 +49,7 @@ elseif(MSVC)
     message(STATUS "MSVC detected — building sqlite3.dll only")
 
     # 3.1 автоматически экспортировать ВСЕ глобальные символы, если забыли __declspec(dllexport)
-    # set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+    set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
     add_library(sqlite3 SHARED ${SQLITE_SOURCES})
 
@@ -67,4 +67,5 @@ elseif(MSVC)
         target_link_libraries(sqlite3_cli PRIVATE sqlite3)
     else()
         message(STATUS "sqlite3.lib не собиралась.")
+    endif()
 endif()
