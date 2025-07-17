@@ -1,6 +1,8 @@
 /.idea/
 *.o
 *.so
+*.dll
+*.obj
 /sqlite-amalgamation-3260000/sqlite3
 /sqlite-amalgamation-3260000/build/
 /.vs
