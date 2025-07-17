@@ -4,21 +4,28 @@ project(sqlite_from_scratch C)
 # Варварно, но наглядно: кладём исходники в переменные
 set(SQLITE_SOURCES sqlite3.c)
 set(SHELL_SOURCES shell.c)
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    # === Шаг 1. Собираем разделяемую библиотеку (`libsqlite3.so`) ===
+    add_library(sqlite3 SHARED ${SQLITE_SOURCES})
 
-# === Шаг 1. Собираем разделяемую библиотеку (`libsqlite3.so`) ===
-add_library(sqlite3 SHARED ${SQLITE_SOURCES})
+    # Флаги: PIC нужен только для .so; остальные ключи подключаем через target_link_libraries
+    target_compile_options(sqlite3 PRIVATE -fPIC)
 
-# Флаги: PIC нужен только для .so; остальные ключи подключаем через target_link_libraries
-target_compile_options(sqlite3 PRIVATE -fPIC)
+    # Потоковая и прочие системные либы
+    target_link_libraries(sqlite3 PRIVATE pthread dl m)
 
-# Потоковая и прочие системные либы
-target_link_libraries(sqlite3 PRIVATE pthread dl m)
+    # === Шаг 2. Собираем утилиту `sqlite3` ===
+    add_executable(sqlite3_cli ${SHELL_SOURCES})
 
-# === Шаг 2. Собираем утилиту `sqlite3` ===
-add_executable(sqlite3_cli ${SHELL_SOURCES})
-
-# Говорим линковщику, где лежит наш .so
-target_link_libraries(sqlite3_cli PRIVATE sqlite3 pthread dl m)
-
-# Чтобы runtime искал .so рядом с бинарём
-set_target_properties(sqlite3_cli PROPERTIES INSTALL_RPATH "$ORIGIN")
+    # Линкуем *с* библиотекой, только если она получилаcь выше.
+    # target_link_libraries игнорирует отсутствующие цели, но сообщим пользователю.
+    if(TARGET sqlite3)
+        # Говорим линковщику, где лежит наш .so
+        target_link_libraries(sqlite3_cli PRIVATE sqlite3 pthread dl m)
+        # RPATH="$ORIGIN" → во время запуска искать .so рядом с бинарём
+        # Чтобы runtime искал .so рядом с бинарём
+        set_target_properties(sqlite3_cli PROPERTIES INSTALL_RPATH "$ORIGIN")
+    else()
+        message(STATUS "libsqlite3.so не собиралась (не Linux) ─ линковка только с системными библиотеками.")
+    endif()
+endif()
