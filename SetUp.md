@@ -212,7 +212,8 @@ sqlite> .exit
 6424686 .rw-r--r-- nemo users 543 KB Sat Dec  1 20:38:26 2018  sqlite3.h
 6424685 .rw-r--r-- nemo users  33 KB Sat Dec  1 20:38:26 2018  sqlite3ext.h
 
-ts=$(date +'%Y-%m-%d_%H:%M:%S')
+┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Thu Jul 17, 10:16 )
+└─< git: master>-[ $ ] ts=$(date +'%Y-%m-%d_%H:%M:%S')
 
 ┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Thu Jul 17, 10:18 )
 └─< git: master>-[ $ ] cmake --build build --target clean && cmake -S . -B build --fresh --log-level=VERBOSE --log-context 2>&1 | tee "build/configure_$ts.log"
