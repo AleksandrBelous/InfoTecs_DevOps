@@ -212,8 +212,10 @@ sqlite> .exit
 6424686 .rw-r--r-- nemo users 543 KB Sat Dec  1 20:38:26 2018  sqlite3.h
 6424685 .rw-r--r-- nemo users  33 KB Sat Dec  1 20:38:26 2018  sqlite3ext.h
 
-┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Thu Jul 17, 10:16 )
-└─< git: master>-[ $ ] cmake -S . -B build --fresh
+ts=$(date +'%Y-%m-%d_%H:%M:%S')
+
+┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Thu Jul 17, 10:18 )
+└─< git: master>-[ $ ] cmake --build build --target clean && cmake -S . -B build --fresh --log-level=VERBOSE --log-context 2>&1 | tee "build/configure_$ts.log"
 -- The C compiler identification is GNU 15.1.1
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
@@ -225,25 +227,13 @@ sqlite> .exit
 -- Build files have been written to: /home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build
 
 ┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Thu Jul 17, 10:18 )
-└─< git: master>-[ $ ] cmake -S . -B build --fresh
--- The C compiler identification is GNU 15.1.1
--- Detecting C compiler ABI info
--- Detecting C compiler ABI info - done
--- Check for working C compiler: /usr/bin/cc - skipped
--- Detecting C compile features
--- Detecting C compile features - done
--- Configuring done (0.2s)
--- Generating done (0.0s)
--- Build files have been written to: /home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build
-
-┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Thu Jul 17, 10:18 )
-└─< git: master>-[ $ ] cmake --build build --target sqlite3    
+└─< git: master>-[ $ ] cmake --build build --target sqlite3 VERBOSE=1 2>&1 | tee "build/build_$ts.log"
 [ 50%] Building C object CMakeFiles/sqlite3.dir/sqlite3.c.o
 [100%] Linking C shared library libsqlite3.so
 [100%] Built target sqlite3
 
 ┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Thu Jul 17, 10:19 )
-└─< git: master>-[ $ ] cmake --build build --target sqlite3_cli
+└─< git: master>-[ $ ] cmake --build build --target sqlite3_cli VERBOSE=1 2>&1 | tee -a "build/build_$ts.log"
 [ 50%] Built target sqlite3
 [ 75%] Building C object CMakeFiles/sqlite3_cli.dir/shell.c.o
 [100%] Linking C executable sqlite3_cli
