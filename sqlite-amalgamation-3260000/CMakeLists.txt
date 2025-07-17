@@ -17,7 +17,7 @@ target_link_libraries(sqlite3 PRIVATE pthread dl m)
 # === Шаг 2. Собираем утилиту `sqlite3` ===
 add_executable(sqlite3_cli ${SHELL_SOURCES})
 
-# Говорим линковщику, где лежит наша .so
+# Говорим линковщику, где лежит наш .so
 target_link_libraries(sqlite3_cli PRIVATE sqlite3 pthread dl m)
 
 # Чтобы runtime искал .so рядом с бинарём
