@@ -51,14 +51,8 @@ elseif(MSVC)
     # 3.1 автоматически экспортировать ВСЕ глобальные символы, если забыли __declspec(dllexport)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
+    # 3.2 собираем DLL
     add_library(sqlite3 SHARED ${SQLITE_SOURCES})
-
-    # 3.2 добавляем макро, чтобы публичные API-функции точно получили dllexport
-    # add_definitions(-DSQLITE_API=__declspec(dllexport))
-    # target_compile_definitions(sqlite3 PRIVATE "SQLITE_API=__declspec(dllexport)")
-
-    # 3.3 собираем DLL
-    # add_library(sqlite3 SHARED ${SQLITE_SOURCES})
 
     # ---- тестовый CLI ----
     add_executable(sqlite3_cli ${SHELL_SOURCES})
