@@ -74,11 +74,11 @@ install(TARGETS sqlite3_cli
 #   cmake --build build --target install 2>&1 | tee "build/install_$ts.log"
 #
 # Windows:
-#   @echo off
-#   for /f "delims=" %%i in ('wmic os get LocalDateTime ^| find "."') do set ts=%%i
-#   set ts=%ts:~0,4%-%ts:~4,2%-%ts:~6,2%_%ts:~8,2%-%ts:~10,2%-%ts:~12,2%
-#
-#   cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context > "build\configure_%ts%.log" 2>&1
+#   for /f "delims=" %i in ('powershell -NoProfile -Command "Get-Date -Format yyyy-MM-dd_HH-mm-ss"') do set ts=%i
+#   cmake --build build --target clean --config Debug
+#   cmake --build build --target clean --config Release
+#   if not exist build mkdir build
+#   cmake -S . -B build --fresh -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context > "build\configure_%ts%.log" 2>&1
 #   cmake --build build --target sqlite3 --config Release --verbose > "build\build_%ts%.log" 2>&1
 #   cmake --build build --target sqlite3_cli --config Release --verbose >> "build\build_%ts%.log" 2>&1
 #   cmake --install build --config Release > "build\install_%ts%.log" 2>&1
