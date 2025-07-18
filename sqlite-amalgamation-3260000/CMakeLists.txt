@@ -62,15 +62,26 @@ install(TARGETS sqlite3_cli
         RUNTIME DESTINATION bin)   # .exe / Linux-бинарь
 
 # ---------------------------------------------------------------------------
-# 5.  Памятка по сборке  (не исполняется, просто для справки)
+# 5.  Памятка по сборке
 # ---------------------------------------------------------------------------
-# Linux:
-#   cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release
-#   cmake --build build --target install -j$(nproc)
 #
-# Windows (PowerShell):
-#   cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX=Release
-#   cmake --build build --config Release --target install
+# Linux:
+#   ts=$(date +'%Y-%m-%d_%H:%M:%S')
+#   cmake --build build --target clean
+#   cmake -S . -B build --fresh -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context 2>&1 | tee "build/configure_$ts.log"
+#   cmake --build build --target sqlite3 VERBOSE=1 2>&1 | tee "build/build_$ts.log"
+#   cmake --build build --target sqlite3_cli VERBOSE=1 2>&1 | tee -a "build/build_$ts.log"
+#   cmake --build build --target install 2>&1 | tee "build/install_$ts.log"
+#
+# Windows:
+#   @echo off
+#   for /f "delims=" %%i in ('wmic os get LocalDateTime ^| find "."') do set ts=%%i
+#   set ts=%ts:~0,4%-%ts:~4,2%-%ts:~6,2%_%ts:~8,2%-%ts:~10,2%-%ts:~12,2%
+#
+#   cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context > "build\configure_%ts%.log" 2>&1
+#   cmake --build build --target sqlite3 --config Release --verbose > "build\build_%ts%.log" 2>&1
+#   cmake --build build --target sqlite3_cli --config Release --verbose >> "build\build_%ts%.log" 2>&1
+#   cmake --install build --config Release > "build\install_%ts%.log" 2>&1
 #
 # Готовые файлы окажутся в:
-#   Release/bin/sqlite3_cli[.exe], Release/bin/sqlite3.dll, Release/lib/libsqlite3.so
+#   Release/bin/sqlite3_cli[.exe], Release/bin/sqlite3.dll, Release/lib/libsqlite3.[so|lib]
