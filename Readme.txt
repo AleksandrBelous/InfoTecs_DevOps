@@ -265,7 +265,7 @@ CMake Error at build/cmake_install.cmake:51 (file):
 cmake --build build --target sqlite3
 cmake --build build --target sqlite3_cli
 
-без --config Release. Собрался Debug‑вариант, поэтому библиотеки и exe легли в build\Debug\
+без --config Release. В итоге собрался Debug‑вариант, поэтому библиотеки и exe легли в build\Debug\
 Затем мы попытались установить Release‑конфигурацию:
 
 cmake --install build --config Release
