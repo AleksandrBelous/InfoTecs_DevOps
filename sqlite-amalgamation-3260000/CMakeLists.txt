@@ -54,7 +54,7 @@ endif()
 # ---------------------------------------------------------------------------
 install(TARGETS sqlite3            # .so или .dll (+.lib/.exp)
         RUNTIME DESTINATION bin    # dll-загрузчик под Windows
-        LIBRARY DESTINATION lib    # .so
+        LIBRARY DESTINATION lib)    # .so
 
 install(TARGETS sqlite3_cli
         RUNTIME DESTINATION bin)   # .exe / Linux-бинарь
