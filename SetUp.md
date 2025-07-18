@@ -216,7 +216,7 @@ sqlite> .exit
 └─< git: master>-[ $ ] ts=$(date +'%Y-%m-%d_%H:%M:%S')
 
 ┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Thu Jul 17, 10:18 )
-└─< git: master>-[ $ ] cmake --build build --target clean && cmake -S . -B build --fresh --log-level=VERBOSE --log-context 2>&1 | tee "build/configure_$ts.log"
+└─< git: master>-[ $ ] cmake --build build --target clean && cmake -S . -B build --fresh -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context 2>&1 | tee "build/configure_$ts.log"
 -- The C compiler identification is GNU 15.1.1
 -- Detecting C compiler ABI info
 -- Detecting C compiler ABI info - done
@@ -249,4 +249,19 @@ Use ".open FILENAME" to reopen on a persistent database.
 sqlite> .exit
 
 ┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Thu Jul 17, 10:19 )
+└─< git: master>-[ $ ]
+
+┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Fri Jul 18, 20:21 )
+└─< git: master>-[ $ ] cmake --build build --target install
+[ 50%] Built target sqlite3
+[ 75%] Building C object CMakeFiles/sqlite3_cli.dir/shell.c.o
+[100%] Linking C executable sqlite3_cli
+[100%] Built target sqlite3_cli
+Install the project...
+-- Install configuration: "Release"
+-- Installing: /home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/Release/lib/libsqlite3.so
+-- Installing: /home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/Release/bin/sqlite3_cli
+-- Set non-toolchain portion of runtime path of "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/Release/bin/sqlite3_cli" to "$ORIGIN/../lib"
+
+┌─[ nemo on nautilus ] at [ ~/Стажировка InfoTecs/sqlite-amalgamation-3260000 ]-( Fri Jul 18, 20:21 )
 └─< git: master>-[ $ ] 
