@@ -2,64 +2,75 @@ cmake_minimum_required(VERSION 3.15)
 project(sqlite_from_scratch C)
 
 # ---------------------------------------------------------------------------
-# 1. Общие исходники
+# 0.  Куда ставить «готовый релиз» (можно переопределить -DCMAKE_INSTALL_PREFIX)
 # ---------------------------------------------------------------------------
-
-# Варварно, но наглядно: кладём исходники в переменные
-set(SQLITE_SOURCES sqlite3.c)
-set(SHELL_SOURCES shell.c)
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+    # По-умолчанию кладём подкаталог Release/ рядом с CMakeLists.txt
+    set(CMAKE_INSTALL_PREFIX "${CMAKE_SOURCE_DIR}/Release" CACHE PATH "" FORCE)
+endif()
 
 # ---------------------------------------------------------------------------
-# 2. Linux-ветка
+# 1.  Общие исходники
 # ---------------------------------------------------------------------------
+set(SQLITE_SOURCES sqlite3.c)   # Амальгамированная SQLite
+set(SHELL_SOURCES  shell.c)     # Исходник консольного клиента
 
+# ---------------------------------------------------------------------------
+# 2.  Ветка Linux
+# ---------------------------------------------------------------------------
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
 
-    # === Шаг 1. Собираем разделяемую библиотеку (`libsqlite3.so`) ===
+    # 2.1 Динамическая библиотека libsqlite3.so
     add_library(sqlite3 SHARED ${SQLITE_SOURCES})
+    target_compile_options(sqlite3 PRIVATE -fPIC)        # Position-Independent Code
+    target_link_libraries(sqlite3 PRIVATE pthread dl m)  # Системные либы
 
-    # Флаги: PIC нужен только для .so; остальные ключи подключаем через target_link_libraries
-    target_compile_options(sqlite3 PRIVATE -fPIC)
-
-    # Потоковая и прочие системные либы
-    target_link_libraries(sqlite3 PRIVATE pthread dl m)
-
-    # === Шаг 2. Собираем утилиту `sqlite3` ===
+    # 2.2 Консольная утилита sqlite3_cli
     add_executable(sqlite3_cli ${SHELL_SOURCES})
+    target_link_libraries(sqlite3_cli PRIVATE sqlite3 pthread dl m)
 
-    # Линкуем *с* библиотекой, только если она получилаcь выше.
-    # target_link_libraries игнорирует отсутствующие цели, но сообщим пользователю.
-    if(TARGET sqlite3)
-
-        # Говорим линковщику, где лежит наш .so
-        target_link_libraries(sqlite3_cli PRIVATE sqlite3 pthread dl m)
-
-        # RPATH="$ORIGIN" → во время запуска искать .so рядом с бинарём
-        # Чтобы runtime искал .so рядом с бинарём
-        set_target_properties(sqlite3_cli PROPERTIES INSTALL_RPATH "$ORIGIN")
-    else()
-        message(STATUS "libsqlite3.so не собиралась (не Linux) ─ линк только с системными библиотеками.")
-    endif()
+    # RPATH: во время запуска искать .so в ../lib относительно бинаря
+    set_target_properties(sqlite3_cli PROPERTIES
+        INSTALL_RPATH "$ORIGIN/../lib")
 
 # ---------------------------------------------------------------------------
-# 3. Windows + MSVC — только DLL
+# 3.  Ветка Windows + MSVC
 # ---------------------------------------------------------------------------
-
 elseif(MSVC)
-    message(STATUS "MSVC detected — building sqlite3.dll only")
+    message(STATUS "MSVC detected — building sqlite3.dll")
 
-    # 3.1 автоматически экспортировать ВСЕ глобальные символы, если забыли __declspec(dllexport)
+    # Автоматически экспортировать все публичные символы, если нет __declspec(dllexport)
     set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
-    # 3.2 собираем DLL
     add_library(sqlite3 SHARED ${SQLITE_SOURCES})
-
-    # ---- тестовый CLI ----
     add_executable(sqlite3_cli ${SHELL_SOURCES})
-    if(TARGET sqlite3)
-    # target_compile_definitions(sqlite3_cli PRIVATE _CRT_SECURE_NO_WARNINGS)
-        target_link_libraries(sqlite3_cli PRIVATE sqlite3)
-    else()
-        message(STATUS "sqlite3.lib не собиралась.")
-    endif()
+    target_link_libraries(sqlite3_cli PRIVATE sqlite3)
+
+    # На Windows загрузчик ищет .dll сначала рядом с .exe, затем в PATH.
+    # sqlite3_cli.exe и sqlite3.dll мы кладём в один каталог bin/ (см. install ниже).
 endif()
+
+# ---------------------------------------------------------------------------
+# 4.  Унифицированные правила «куда ставить»
+# ---------------------------------------------------------------------------
+install(TARGETS sqlite3            # .so или .dll (+.lib/.exp)
+        RUNTIME DESTINATION bin    # dll-загрузчик под Win
+        LIBRARY DESTINATION lib    # .so
+        ARCHIVE DESTINATION lib)   # .a / .lib (если захотите статику)
+
+install(TARGETS sqlite3_cli
+        RUNTIME DESTINATION bin)   # .exe / Linux-бинарь
+
+# ---------------------------------------------------------------------------
+# 5.  Памятка по сборке  (не исполняется, просто для справки)
+# ---------------------------------------------------------------------------
+# Linux:
+#   cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release
+#   cmake --build build --target install -j$(nproc)
+#
+# Windows (PowerShell):
+#   cmake -S . -B build -G "Visual Studio 17 2022" -A x64 -DCMAKE_INSTALL_PREFIX=Release
+#   cmake --build build --config Release --target install
+#
+# Готовые файлы окажутся в:
+#   Release/bin/sqlite3_cli[.exe], Release/bin/sqlite3.dll, Release/lib/libsqlite3.so
