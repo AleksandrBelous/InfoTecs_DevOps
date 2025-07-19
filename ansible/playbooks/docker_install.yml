@@ -1,0 +1,110 @@
+- name: Install Docker Engine on Debian Bookworm
+  hosts: dev-vm
+  become: true
+
+  vars:
+    docker_gpg_url: https://download.docker.com/linux/debian/gpg
+    docker_repo_channel: stable
+    docker_keyring_path: /etc/apt/keyrings/docker.asc
+
+  tasks:
+    - name: Install required dependencies
+      apt:
+        name:
+          - ca-certificates
+          - curl
+        state: present
+        update_cache: true
+
+    - name: Create keyrings directory
+      file:
+        path: /etc/apt/keyrings
+        state: directory
+        mode: '0755'
+
+    - name: Download Docker GPG key
+      get_url:
+        url: "{{ docker_gpg_url }}"
+        dest: "{{ docker_keyring_path }}"
+        mode: '0644'
+
+    - name: Make GPG key readable
+      file:
+        path: "{{ docker_keyring_path }}"
+        mode: '0644'
+        state: file
+
+    - name: Get system architecture
+      command: dpkg --print-architecture
+      register: system_arch
+      changed_when: false
+
+    - name: Get Debian version codename
+      shell: . /etc/os-release && echo "$VERSION_CODENAME"
+      register: debian_codename
+      changed_when: false
+
+    - name: Add Docker repository to sources.list.d
+      copy:
+        dest: /etc/apt/sources.list.d/docker.list
+        content: "deb [arch={{ system_arch.stdout }} signed-by={{ docker_keyring_path }}] https://download.docker.com/linux/debian {{ debian_codename.stdout }} {{ docker_repo_channel }}"
+        mode: '0644'
+
+    - name: Update apt package index
+      apt:
+        update_cache: yes
+
+    - name: Install Docker and plugins
+      apt:
+        name:
+          - docker-ce              # сам движок
+          - docker-ce-cli          # cli-утилита
+          - containerd.io          # runtime-демон
+          - docker-buildx-plugin   # buildx
+          - docker-compose-plugin  # compose v2
+        state: latest
+
+    - name: Enable and start Docker
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+
+    - name: Add current user to docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+
+    - name: Set Docker daemon config
+      copy:
+        dest: /etc/docker/daemon.json
+        content: |
+          {
+            "log-driver": "json-file",
+            "log-opts": {
+              "max-size": "10m",
+              "max-file": "3"
+            },
+            "exec-opts": ["native.cgroupdriver=systemd"]
+          }
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Restart Docker
+
+    - name: Run hello-world container
+      command: docker run --rm hello-world
+      register: hello
+      changed_when: false
+
+    - name: Show test output
+      debug:
+        var: hello.stdout
+
+  handlers:
+    - name: Restart Docker
+      systemd:
+        name: docker
+        state: restarted
+        enabled: yes
