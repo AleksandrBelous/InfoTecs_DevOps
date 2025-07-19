@@ -585,3 +585,43 @@ Restarting VM to apply changes...
 ==> default: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
 
 Общая папка с докером и исходниками примонтировалась!
+Но в ней лишние папки для билда, релиза и логи. Тогда воспользуемся
+
+type: "rsync",
+rsync__exclude: ["Release", "build", "logs_lin", "logs_win"]
+
+чтобы синхронизировать только нужные папки. Этот тип не поддерживает двунаправленную синхронизацию, но в нашем случае
+можно передавать данные только из хоста в контейнер.
+В итоге имеем:
+
+vagrant up --provider=virtualbox
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Clearing any previously set forwarded ports...
+==> default: Clearing any previously set network interfaces...
+==> default: Preparing network interfaces based on configuration...
+    default: Adapter 1: nat
+    default: Adapter 2: hostonly
+==> default: Forwarding ports...
+    default: 22 (guest) => 2222 (host) (adapter 1)
+==> default: Running 'pre-boot' VM customizations...
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+    default: SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+==> default: Machine booted and ready!
+[default] GuestAdditions 7.1.10 running --- OK.
+==> default: Checking for guest additions in VM...
+==> default: Configuring and enabling network interfaces...
+==> default: Installing rsync to the VM...
+==> default: Rsyncing folder: /home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/ => /home/vagrant/sqlite-amalgamation-3260000
+==> default:   - Exclude: [".vagrant/", "Release", "build", "logs_lin", "logs_win"]
+==> default: Mounting shared folders...
+    default: /home/nemo/Стажировка InfoTecs => /vagrant
+==> default: Machine already provisioned. Run `vagrant provision` or use the `--provision`
+==> default: flag to force provisioning. Provisioners marked to run always will still run.
+
+==> default: Machine 'default' has a post `vagrant up` message. This is a message
+==> default: from the creator of the Vagrantfile, and not from Vagrant itself:
+==> default:
+==> default: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
