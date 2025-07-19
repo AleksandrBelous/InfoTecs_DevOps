@@ -1,0 +1,7 @@
+[ 50%] Built target sqlite3
+[100%] Built target sqlite3_cli
+Install the project...
+-- Install configuration: "Release"
+-- Installing: /home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/Release/lib/libsqlite3.so
+-- Installing: /home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/Release/bin/sqlite3_cli
+-- Set non-toolchain portion of runtime path of "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/Release/bin/sqlite3_cli" to "$ORIGIN/../lib"

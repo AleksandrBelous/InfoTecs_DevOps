@@ -1,0 +1,66 @@
+/usr/bin/cmake -S"/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000" -B"/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" --check-build-system CMakeFiles/Makefile.cmake 0
+/usr/bin/make  -f CMakeFiles/Makefile2 sqlite3
+make[1]: вход в каталог «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+/usr/bin/cmake -S"/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000" -B"/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" --check-build-system CMakeFiles/Makefile.cmake 0
+/usr/bin/cmake -E cmake_progress_start "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build/CMakeFiles" 2
+/usr/bin/make  -f CMakeFiles/Makefile2 CMakeFiles/sqlite3.dir/all
+make[2]: вход в каталог «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+/usr/bin/make  -f CMakeFiles/sqlite3.dir/build.make CMakeFiles/sqlite3.dir/depend
+make[3]: вход в каталог «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+cd "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" && /usr/bin/cmake -E cmake_depends "Unix Makefiles" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build/CMakeFiles/sqlite3.dir/DependInfo.cmake" "--color="
+make[3]: выход из каталога «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+/usr/bin/make  -f CMakeFiles/sqlite3.dir/build.make CMakeFiles/sqlite3.dir/build
+make[3]: вход в каталог «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+[ 50%] Building C object CMakeFiles/sqlite3.dir/sqlite3.c.o
+/usr/bin/cc -Dsqlite3_EXPORTS  -O3 -DNDEBUG -fPIC -fPIC -MD -MT CMakeFiles/sqlite3.dir/sqlite3.c.o -MF CMakeFiles/sqlite3.dir/sqlite3.c.o.d -o CMakeFiles/sqlite3.dir/sqlite3.c.o -c "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/sqlite3.c"
+/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/sqlite3.c: В функции «sqlite3SelectNew»:
+/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/sqlite3.c:124086:10: предупреждение: функция может возвращать адрес локальной переменной [-Wreturn-local-addr]
+124086 |   return pNew;
+       |          ^~~~
+/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/sqlite3.c:124046:10: замечание: объявлено здесь
+124046 |   Select standin;
+       |          ^~~~~~~
+/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/sqlite3.c:124046:10: замечание: объявлено здесь
+[100%] Linking C shared library libsqlite3.so
+/usr/bin/cmake -E cmake_link_script CMakeFiles/sqlite3.dir/link.txt --verbose=1
+/usr/bin/cc -fPIC -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/sqlite3.dir/link.d -shared -Wl,-soname,libsqlite3.so -o libsqlite3.so CMakeFiles/sqlite3.dir/sqlite3.c.o  -lpthread -ldl -lm
+make[3]: выход из каталога «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+[100%] Built target sqlite3
+make[2]: выход из каталога «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+/usr/bin/cmake -E cmake_progress_start "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build/CMakeFiles" 0
+make[1]: выход из каталога «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+/usr/bin/cmake -S"/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000" -B"/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" --check-build-system CMakeFiles/Makefile.cmake 0
+/usr/bin/make  -f CMakeFiles/Makefile2 sqlite3_cli
+make[1]: вход в каталог «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+/usr/bin/cmake -S"/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000" -B"/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" --check-build-system CMakeFiles/Makefile.cmake 0
+/usr/bin/cmake -E cmake_progress_start "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build/CMakeFiles" 4
+/usr/bin/make  -f CMakeFiles/Makefile2 CMakeFiles/sqlite3_cli.dir/all
+make[2]: вход в каталог «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+/usr/bin/make  -f CMakeFiles/sqlite3.dir/build.make CMakeFiles/sqlite3.dir/depend
+make[3]: вход в каталог «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+cd "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" && /usr/bin/cmake -E cmake_depends "Unix Makefiles" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build/CMakeFiles/sqlite3.dir/DependInfo.cmake" "--color="
+Dependencies file "CMakeFiles/sqlite3.dir/sqlite3.c.o.d" is newer than depends file "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build/CMakeFiles/sqlite3.dir/compiler_depend.internal".
+Dependencies file "CMakeFiles/sqlite3.dir/link.d" is newer than depends file "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build/CMakeFiles/sqlite3.dir/compiler_depend.internal".
+Consolidate compiler generated dependencies of target sqlite3
+make[3]: выход из каталога «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+/usr/bin/make  -f CMakeFiles/sqlite3.dir/build.make CMakeFiles/sqlite3.dir/build
+make[3]: вход в каталог «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+make[3]: Цель «CMakeFiles/sqlite3.dir/build» не требует выполнения команд.
+make[3]: выход из каталога «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+[ 50%] Built target sqlite3
+/usr/bin/make  -f CMakeFiles/sqlite3_cli.dir/build.make CMakeFiles/sqlite3_cli.dir/depend
+make[3]: вход в каталог «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+cd "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" && /usr/bin/cmake -E cmake_depends "Unix Makefiles" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build" "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build/CMakeFiles/sqlite3_cli.dir/DependInfo.cmake" "--color="
+make[3]: выход из каталога «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+/usr/bin/make  -f CMakeFiles/sqlite3_cli.dir/build.make CMakeFiles/sqlite3_cli.dir/build
+make[3]: вход в каталог «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+[ 75%] Building C object CMakeFiles/sqlite3_cli.dir/shell.c.o
+/usr/bin/cc   -O3 -DNDEBUG -MD -MT CMakeFiles/sqlite3_cli.dir/shell.c.o -MF CMakeFiles/sqlite3_cli.dir/shell.c.o.d -o CMakeFiles/sqlite3_cli.dir/shell.c.o -c "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/shell.c"
+[100%] Linking C executable sqlite3_cli
+/usr/bin/cmake -E cmake_link_script CMakeFiles/sqlite3_cli.dir/link.txt --verbose=1
+/usr/bin/cc -O3 -DNDEBUG -Wl,--dependency-file=CMakeFiles/sqlite3_cli.dir/link.d CMakeFiles/sqlite3_cli.dir/shell.c.o -o sqlite3_cli  -Wl,-rpath,"/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build:" libsqlite3.so -lpthread -ldl -lm
+make[3]: выход из каталога «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+[100%] Built target sqlite3_cli
+make[2]: выход из каталога «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
+/usr/bin/cmake -E cmake_progress_start "/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build/CMakeFiles" 0
+make[1]: выход из каталога «/home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000/build»
