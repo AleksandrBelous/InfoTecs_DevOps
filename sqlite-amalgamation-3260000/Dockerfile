@@ -13,12 +13,13 @@ COPY . .
 
 # 3. Сборка и установка
 RUN set -eux; \
-    ts=$(date +'%Y-%m-%d_%H-%M-%S'); \
+    ts=$(date +'%Y-%m-%d_%H:%M:%S'); \
     mkdir -p build; \
-    cmake -S . -B build --fresh -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context 2>&1 | tee "build/configure_$ts.log"; \
-    cmake --build build --target sqlite3 VERBOSE=1 2>&1 | tee "build/build_$ts.log"; \
-    cmake --build build --target sqlite3_cli VERBOSE=1 2>&1 | tee -a "build/build_$ts.log"; \
-    cmake --build build --target install 2>&1 | tee "build/install_$ts.log"
+    mkdir -p logs_lin; \
+    cmake -S . -B build --fresh -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context 2>&1 | tee "logs_lin/configure_$ts.log"; \
+    cmake --build build --target sqlite3 VERBOSE=1 2>&1 | tee "logs_lin/build_$ts.log"; \
+    cmake --build build --target sqlite3_cli VERBOSE=1 2>&1 | tee -a "logs_lin/build_$ts.log"; \
+    cmake --build build --target install 2>&1 | tee "logs_lin/install_$ts.log"
 
 # 4. Точка входа
 CMD ["/bin/bash"]
