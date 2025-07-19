@@ -422,3 +422,24 @@ install(TARGETS sqlite3_cli
 построения контейнера и отлаживаться по каждой команде в составе однострочника.
 В итоге Dockerfile собирает легковесный debian-образ и компилирует утилиту sqlite_cli с динамической либой.
 Всё находится в /src/Release.
+Для сборки докера необходимо, находясь в паке с Dockerfile, выполнить:
+
+docker build -t my-sqlite .
+
+Для запуска выполнить:
+
+docker run --rm -it my-sqlite:latest
+
+попав таким образом в bash-сессию, можно запускать sqlite_cli:
+
+root@bdda32ffd050:/src# ./Release/bin/sqlite3_cli
+SQLite version 3.26.0 2018-12-01 12:34:55
+Enter ".help" for usage hints.
+Connected to a transient in-memory database.
+Use ".open FILENAME" to reopen on a persistent database.
+sqlite> select sqlite_version();
+3.26.0
+sqlite> .exit
+root@bdda32ffd050:/src# ldd ./Release/bin/sqlite3_cli | grep libsqlite3.so
+        libsqlite3.so => /src/./Release/bin/../lib/libsqlite3.so (0x00007fb72337f000)
+root@bdda32ffd050:/src#
