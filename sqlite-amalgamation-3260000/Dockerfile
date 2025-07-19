@@ -2,7 +2,7 @@
 FROM debian:bookworm-slim
 LABEL maintainer="Aleksandr Belous"
 
-# 1. Инструменты
+# 1. Утилиты
 RUN apt-get update -y; \
     apt-get install -y --no-install-recommends build-essential cmake moreutils apt-utils; \
     rm -rf /var/lib/apt/lists/*
