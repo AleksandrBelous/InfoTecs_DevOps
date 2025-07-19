@@ -448,4 +448,110 @@ root@bdda32ffd050:/src#
 
 vagrant init debian/bookworm64
 
-создали файл Vagrantfile с базовым наполнением (закомментированным) для поднятия машины debian/bookworm64.
+создали файл Vagrantfile с базовым наполнением (закомментированным) для поднятия машины debian/bookworm64. Также указали
+для начала просто размер оперативки и число cpus.
+Попытались тестово поднять vagrant up --provider=virtualbox, но без указания типа сети (сетевой интерфейс vboxnet0,
+как оказалось, нужно было ещё создать) пошла ошибка:
+
+Bringing machine 'default' up with 'virtualbox' provider...
+There was an error while executing `VBoxManage`, a CLI used by Vagrant
+for controlling VirtualBox. The command and stderr is shown below.
+
+Command: ["list", "hostonlyifs"]
+
+Stderr: VBoxManage: error: Code NS_ERROR_FAILURE (0x80004005) - Operation failed (extended info not available)
+VBoxManage: error: Context: "FindHostNetworkInterfacesOfType(HostNetworkInterfaceType_HostOnly, ComSafeArrayAsOutParam(hostNetworkInterfaces))" at line 148 of file VBoxManageList.cpp
+
+Создали интерфейс sudo VBoxManage hostonlyif create
+                  0%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
+                  Interface 'vboxnet0' was successfully created
+
+Также выбрали в Vagrantfile сеть:
+
+config.vm.network "private_network", ip: "192.168.56.10"
+
+Наконец удалось поднять машину:
+
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Box 'debian/bookworm64' could not be found. Attempting to find and install...
+    default: Box Provider: virtualbox
+    default: Box Version: >= 0
+==> default: Loading metadata for box 'debian/bookworm64'
+    default: URL: https://vagrantcloud.com/api/v2/vagrant/debian/bookworm64
+==> default: Adding box 'debian/bookworm64' (v12.20250126.1) for provider: virtualbox (amd64)
+    default: Downloading: https://vagrantcloud.com/debian/boxes/bookworm64/versions/12.20250126.1/providers/virtualbox/amd64/vagrant.box
+Progress: 8% (Rate: 106k/s, Estimated time remaining: 0:44:11)
+
+далее идут логи запуска:
+
+Bringing machine 'default' up with 'virtualbox' provider...
+==> default: Importing base box 'debian/bookworm64'...
+==> default: Matching MAC address for NAT networking...
+==> default: Setting the name of the VM: InfoTecs_default_1752947396575_20707
+Vagrant is currently configured to create VirtualBox synced folders with
+the `SharedFoldersEnableSymlinksCreate` option enabled. If the Vagrant
+guest is not trusted, you may want to disable this option. For more
+information on this option, please refer to the VirtualBox manual:
+
+  https://www.virtualbox.org/manual/ch04.html#sharedfolders
+
+This option can be disabled globally with an environment variable:
+
+  VAGRANT_DISABLE_VBOXSYMLINKCREATE=1
+
+or on a per folder basis within the Vagrantfile:
+
+  config.vm.synced_folder '/host/path', '/guest/path', SharedFoldersEnableSymlinksCreate: false
+==> default: Clearing any previously set network interfaces...
+==> default: Preparing network interfaces based on configuration...
+    default: Adapter 1: nat
+    default: Adapter 2: hostonly
+==> default: Forwarding ports...
+    default: 22 (guest) => 2222 (host) (adapter 1)
+==> default: Running 'pre-boot' VM customizations...
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+    default: SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+    default:
+    default: Vagrant insecure key detected. Vagrant will automatically replace
+    default: this with a newly generated keypair for better security.
+    default:
+    default: Inserting generated public key within guest...
+    default: Removing insecure key from the guest if it's present...
+    default: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> default: Machine booted and ready!
+[default] A Virtualbox Guest Additions installation was found but no tools to rebuild or start them.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+E: Unable to locate package linux-headers-6.1.0-29-amd64
+E: Couldn't find any package by glob 'linux-headers-6.1.0-29-amd64'
+E: Couldn't find any package by regex 'linux-headers-6.1.0-29-amd64'
+E: Unable to locate package build-essential
+Get:1 https://deb.debian.org/debian bookworm InRelease [151 kB]
+Get:2 https://security.debian.org/debian-security bookworm-security InRelease [48.0 kB]
+Get:3 https://security.debian.org/debian-security bookworm-security/main Sources [142 kB]
+Get:4 https://deb.debian.org/debian bookworm-updates InRelease [55.4 kB]
+Get:5 https://security.debian.org/debian-security bookworm-security/main amd64 Packages [272 kB]
+Get:6 https://deb.debian.org/debian bookworm-backports InRelease [59.4 kB]
+Get:7 https://deb.debian.org/debian bookworm/main Sources [9494 kB]
+
+и т.д.
+
+vagrant status
+Current machine states:
+
+default                   running (virtualbox)
+
+The VM is running. To stop this VM, you can run `vagrant halt` to
+shut it down forcefully, or you can run `vagrant suspend` to simply
+suspend the virtual machine. In either case, to restart it again,
+simply run `vagrant up`.
+
+При проверке оказалось, что
+
+config.vm.synced_folder "./sqlite-amalgamation-3260000", "/vagrant_sqlite-amalgamation-3260000"
+
+не смонтировалось, попробуем с аргументом type: "virtualbox"
