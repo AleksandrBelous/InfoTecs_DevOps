@@ -30,8 +30,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_link_libraries(sqlite3_cli PRIVATE sqlite3 pthread dl m)
 
     # RPATH: во время запуска искать .so в ../lib относительно бинарника
-    set_target_properties(sqlite3_cli PROPERTIES
-        INSTALL_RPATH "$ORIGIN/../lib")
+    set_target_properties(sqlite3_cli PROPERTIES INSTALL_RPATH "$ORIGIN/../lib")
 
 # ---------------------------------------------------------------------------
 # 3.  Ветка Windows + MSVC
