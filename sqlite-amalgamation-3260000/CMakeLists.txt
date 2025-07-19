@@ -54,7 +54,8 @@ endif()
 # ---------------------------------------------------------------------------
 install(TARGETS sqlite3            # .so или .dll (+.lib/.exp)
         RUNTIME DESTINATION bin    # dll-загрузчик под Windows
-        LIBRARY DESTINATION lib)    # .so
+        LIBRARY DESTINATION lib    # .so
+        ARCHIVE DESTINATION lib)   # .lib/.exp
 
 install(TARGETS sqlite3_cli
         RUNTIME DESTINATION bin)   # .exe / Linux-бинарь
@@ -75,10 +76,10 @@ install(TARGETS sqlite3_cli
 #
 # Windows:
 #   for /f "delims=" %i in ('powershell -NoProfile -Command "Get-Date -Format yyyy-MM-dd_HH-mm-ss"') do set ts=%i
-#   cmake --build build --target clean --config Debug
-#   cmake --build build --target clean --config Release
 #   if not exist build mkdir build
 #   if not exist logs_win mkdir logs_win
+#   cmake --build build --target clean --config Debug
+#   cmake --build build --target clean --config Release
 #   cmake -S . -B build --fresh -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context > "logs_win\configure_%ts%.log" 2>&1
 #   cmake --build build --target sqlite3 --config Release --verbose > "logs_win\build_%ts%.log" 2>&1
 #   cmake --build build --target sqlite3_cli --config Release --verbose >> "logs_win\build_%ts%.log" 2>&1

@@ -1,0 +1,142 @@
+Change Dir: 'C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build'
+
+Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" sqlite3.vcxproj /p:Configuration=Release /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+Версия MSBuild 17.14.14+a129329f1 для .NET Framework
+Сборка начата 19.07.2025 12:14:40.
+
+Проект "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\sqlite3.vcxproj" в узле 1 (целевые объекты по умолчанию).
+Проект "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\sqlite3.vcxproj" (1) выполняет сборку "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\ZERO_CHECK.vcxproj" (2) в узле 1 (целевые объекты по умолчанию).
+PrepareForBuild:
+  Создание каталога "x64\Release\ZERO_CHECK\".
+  Структурированный вывод включен. Форматирование диагностики компилятора будет отражать иерархию ошибок. Подробнее см. https://aka.ms/cpp/structured-output.
+  Создание каталога "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\".
+InitializeBuildStatus:
+  Создание "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\unsuccessfulbuild", так как было задано "AlwaysCreate".
+  Обращение к "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\unsuccessfulbuild".
+CustomBuild:
+  1>Checking Build System
+FinalizeBuildStatus:
+  Файл "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\unsuccessfulbuild" удаляется.
+  Обращение к "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\ZERO_CHECK.lastbuildstate".
+Сборка проекта "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\ZERO_CHECK.vcxproj" завершена (целевые объекты по умолчанию).
+PrepareForBuild:
+  Структурированный вывод включен. Форматирование диагностики компилятора будет отражать иерархию ошибок. Подробнее см. https://aka.ms/cpp/structured-output.
+  Создание каталога "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\Release\".
+  Создание каталога "sqlite3.dir\Release\sqlite3.tlog\".
+InitializeBuildStatus:
+  Создание "sqlite3.dir\Release\sqlite3.tlog\unsuccessfulbuild", так как было задано "AlwaysCreate".
+  Обращение к "sqlite3.dir\Release\sqlite3.tlog\unsuccessfulbuild".
+CustomBuild:
+  Building Custom Rule C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/CMakeLists.txt
+ClCompile:
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\CL.exe /c /nologo /W1 /WX- /diagnostics:column /O2 /Ob2 /D _WINDLL /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D "CMAKE_INTDIR=\"Release\"" /D sqlite3_EXPORTS /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"sqlite3.dir\Release\\" /Fd"sqlite3.dir\Release\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\sqlite3.c"
+  sqlite3.c
+PreLinkEvent:
+  Auto build dll exports
+  setlocal
+  cd C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build
+  if %errorlevel% neq 0 goto :cmEnd
+  C:
+  if %errorlevel% neq 0 goto :cmEnd
+  "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E __create_def C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/sqlite3.dir/Release/exports.def C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/sqlite3.dir/Release//objects.txt
+  if %errorlevel% neq 0 goto :cmEnd
+  :cmEnd
+  endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+  :cmErrorLevel
+  exit /b %1
+  :cmDone
+  if %errorlevel% neq 0 goto :VCEnd
+  :VCEnd
+Link:
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\link.exe /ERRORREPORT:QUEUE /OUT:"C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\Release\sqlite3.dll" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /DEF:"C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/sqlite3.dir/Release/exports.def" /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/Release/sqlite3.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/Release/sqlite3.lib" /MACHINE:X64  /machine:x64 /DLL sqlite3.dir\Release\sqlite3.obj
+     Создается библиотека C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/Release/sqlite3.lib и объект C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/Release/sqlite3.exp
+  sqlite3.vcxproj -> C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\Release\sqlite3.dll
+FinalizeBuildStatus:
+  Файл "sqlite3.dir\Release\sqlite3.tlog\unsuccessfulbuild" удаляется.
+  Обращение к "sqlite3.dir\Release\sqlite3.tlog\sqlite3.lastbuildstate".
+Сборка проекта "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\sqlite3.vcxproj" завершена (целевые объекты по умолчанию).
+
+Сборка успешно завершена.
+    Предупреждений: 0
+    Ошибок: 0
+
+Прошло времени 00:00:13.89
+
+Change Dir: 'C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build'
+
+Run Build Command(s): "C:/Program Files/Microsoft Visual Studio/2022/Community/MSBuild/Current/Bin/amd64/MSBuild.exe" sqlite3_cli.vcxproj /p:Configuration=Release /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+Версия MSBuild 17.14.14+a129329f1 для .NET Framework
+Сборка начата 19.07.2025 12:15:24.
+
+Проект "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\sqlite3_cli.vcxproj" в узле 1 (целевые объекты по умолчанию).
+Проект "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\sqlite3_cli.vcxproj" (1) выполняет сборку "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\ZERO_CHECK.vcxproj" (2) в узле 1 (целевые объекты по умолчанию).
+PrepareForBuild:
+  Структурированный вывод включен. Форматирование диагностики компилятора будет отражать иерархию ошибок. Подробнее см. https://aka.ms/cpp/structured-output.
+InitializeBuildStatus:
+  Создание "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\unsuccessfulbuild", так как было задано "AlwaysCreate".
+  Обращение к "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\unsuccessfulbuild".
+CustomBuild:
+  Для всех выходных данных обновления не требуется.
+FinalizeBuildStatus:
+  Файл "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\unsuccessfulbuild" удаляется.
+  Обращение к "x64\Release\ZERO_CHECK\ZERO_CHECK.tlog\ZERO_CHECK.lastbuildstate".
+Сборка проекта "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\ZERO_CHECK.vcxproj" завершена (целевые объекты по умолчанию).
+Проект "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\sqlite3_cli.vcxproj" (1) выполняет сборку "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\sqlite3.vcxproj" (3) в узле 1 (целевые объекты по умолчанию).
+PrepareForBuild:
+  Структурированный вывод включен. Форматирование диагностики компилятора будет отражать иерархию ошибок. Подробнее см. https://aka.ms/cpp/structured-output.
+InitializeBuildStatus:
+  Создание "sqlite3.dir\Release\sqlite3.tlog\unsuccessfulbuild", так как было задано "AlwaysCreate".
+  Обращение к "sqlite3.dir\Release\sqlite3.tlog\unsuccessfulbuild".
+CustomBuild:
+  Для всех выходных данных обновления не требуется.
+ClCompile:
+  Для всех выходных данных обновления не требуется.
+PreLinkEvent:
+  Auto build dll exports
+  setlocal
+  cd C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build
+  if %errorlevel% neq 0 goto :cmEnd
+  C:
+  if %errorlevel% neq 0 goto :cmEnd
+  "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E __create_def C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/sqlite3.dir/Release/exports.def C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/sqlite3.dir/Release//objects.txt
+  if %errorlevel% neq 0 goto :cmEnd
+  :cmEnd
+  endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+  :cmErrorLevel
+  exit /b %1
+  :cmDone
+  if %errorlevel% neq 0 goto :VCEnd
+  :VCEnd
+Link:
+  Для всех выходных данных обновления не требуется.
+  sqlite3.vcxproj -> C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\Release\sqlite3.dll
+FinalizeBuildStatus:
+  Файл "sqlite3.dir\Release\sqlite3.tlog\unsuccessfulbuild" удаляется.
+  Обращение к "sqlite3.dir\Release\sqlite3.tlog\sqlite3.lastbuildstate".
+Сборка проекта "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\sqlite3.vcxproj" завершена (целевые объекты по умолчанию).
+PrepareForBuild:
+  Создание каталога "sqlite3_cli.dir\Release\".
+  Структурированный вывод включен. Форматирование диагностики компилятора будет отражать иерархию ошибок. Подробнее см. https://aka.ms/cpp/structured-output.
+  Создание каталога "sqlite3_cli.dir\Release\sqlite3_cli.tlog\".
+InitializeBuildStatus:
+  Создание "sqlite3_cli.dir\Release\sqlite3_cli.tlog\unsuccessfulbuild", так как было задано "AlwaysCreate".
+  Обращение к "sqlite3_cli.dir\Release\sqlite3_cli.tlog\unsuccessfulbuild".
+CustomBuild:
+  Building Custom Rule C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/CMakeLists.txt
+ClCompile:
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\CL.exe /c /nologo /W1 /WX- /diagnostics:column /O2 /Ob2 /D _MBCS /D WIN32 /D _WINDOWS /D NDEBUG /D "CMAKE_INTDIR=\"Release\"" /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"sqlite3_cli.dir\Release\\" /Fd"sqlite3_cli.dir\Release\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\shell.c"
+  shell.c
+Link:
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\link.exe /ERRORREPORT:QUEUE /OUT:"C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\Release\sqlite3_cli.exe" /INCREMENTAL:NO /NOLOGO Release\sqlite3.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/Release/sqlite3_cli.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:/Users/user/source/repos/AleksandrBelous/InfoTecs_DevOps/sqlite-amalgamation-3260000/build/Release/sqlite3_cli.lib" /MACHINE:X64  /machine:x64 sqlite3_cli.dir\Release\shell.obj
+  sqlite3_cli.vcxproj -> C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\Release\sqlite3_cli.exe
+FinalizeBuildStatus:
+  Файл "sqlite3_cli.dir\Release\sqlite3_cli.tlog\unsuccessfulbuild" удаляется.
+  Обращение к "sqlite3_cli.dir\Release\sqlite3_cli.tlog\sqlite3_cli.lastbuildstate".
+Сборка проекта "C:\Users\user\source\repos\AleksandrBelous\InfoTecs_DevOps\sqlite-amalgamation-3260000\build\sqlite3_cli.vcxproj" завершена (целевые объекты по умолчанию).
+
+Сборка успешно завершена.
+    Предупреждений: 0
+    Ошибок: 0
+
+Прошло времени 00:00:03.73
+
