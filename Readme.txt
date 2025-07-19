@@ -625,3 +625,6 @@ Bringing machine 'default' up with 'virtualbox' provider...
 ==> default: from the creator of the Vagrantfile, and not from Vagrant itself:
 ==> default:
 ==> default: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
+
+Таким образом мы выполнили 5 пункт, автоматизировав сборку ВМ через vagrant в среде VB.
+Перейдём к 6 пункту - настройке docker-технологии на машине через плейбук.
