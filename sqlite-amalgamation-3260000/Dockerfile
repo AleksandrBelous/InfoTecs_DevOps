@@ -7,7 +7,7 @@ RUN apt-get update -y; \
     apt-get install -y --no-install-recommends build-essential cmake moreutils apt-utils; \
     rm -rf /var/lib/apt/lists/*
 
-# 2. Копируем проект
+# 2. Копируем проект из хоста внутрь контейнера (в папку /src)
 WORKDIR /src
 COPY . .
 
