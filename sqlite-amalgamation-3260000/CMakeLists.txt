@@ -64,7 +64,7 @@ install(TARGETS sqlite3_cli
 # ---------------------------------------------------------------------------
 #
 # Linux:
-#   ts=$(date +'%Y-%m-%d_%H:%M:%S')
+#   ts=$(date +'%Y-%m-%d_%H-%M-%S')
 #   mkdir -p build
 #   mkdir -p logs_lin
 #   cmake --build build --target clean
