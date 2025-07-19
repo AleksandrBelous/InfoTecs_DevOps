@@ -19,6 +19,7 @@ set(SHELL_SOURCES  shell.c)     # Исходник консольного кли
 # 2.  Ветка Linux
 # ---------------------------------------------------------------------------
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    message(STATUS "Linux detected — building libsqlite3.so")
 
     # 2.1 Динамическая библиотека libsqlite3.so
     add_library(sqlite3 SHARED ${SQLITE_SOURCES})
