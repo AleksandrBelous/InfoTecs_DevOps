@@ -65,21 +65,24 @@ install(TARGETS sqlite3_cli
 #
 # Linux:
 #   ts=$(date +'%Y-%m-%d_%H:%M:%S')
+#   mkdir -p build
+#   mkdir -p logs_lin
 #   cmake --build build --target clean
-#   cmake -S . -B build --fresh -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context 2>&1 | tee "build/configure_$ts.log"
-#   cmake --build build --target sqlite3 VERBOSE=1 2>&1 | tee "build/build_$ts.log"
-#   cmake --build build --target sqlite3_cli VERBOSE=1 2>&1 | tee -a "build/build_$ts.log"
-#   cmake --build build --target install 2>&1 | tee "build/install_$ts.log"
+#   cmake -S . -B build --fresh -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context 2>&1 | tee "logs_lin/configure_$ts.log"
+#   cmake --build build --target sqlite3 VERBOSE=1 2>&1 | tee "logs_lin/build_$ts.log"
+#   cmake --build build --target sqlite3_cli VERBOSE=1 2>&1 | tee -a "logs_lin/build_$ts.log"
+#   cmake --build build --target install 2>&1 | tee "logs_lin/install_$ts.log"
 #
 # Windows:
 #   for /f "delims=" %i in ('powershell -NoProfile -Command "Get-Date -Format yyyy-MM-dd_HH-mm-ss"') do set ts=%i
 #   cmake --build build --target clean --config Debug
 #   cmake --build build --target clean --config Release
 #   if not exist build mkdir build
-#   cmake -S . -B build --fresh -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context > "build\configure_%ts%.log" 2>&1
-#   cmake --build build --target sqlite3 --config Release --verbose > "build\build_%ts%.log" 2>&1
-#   cmake --build build --target sqlite3_cli --config Release --verbose >> "build\build_%ts%.log" 2>&1
-#   cmake --install build --config Release > "build\install_%ts%.log" 2>&1
+#   if not exist logs_win mkdir logs_win
+#   cmake -S . -B build --fresh -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=Release --log-level=VERBOSE --log-context > "logs_win\configure_%ts%.log" 2>&1
+#   cmake --build build --target sqlite3 --config Release --verbose > "logs_win\build_%ts%.log" 2>&1
+#   cmake --build build --target sqlite3_cli --config Release --verbose >> "logs_win\build_%ts%.log" 2>&1
+#   cmake --install build --config Release > "logs_win\install_%ts%.log" 2>&1
 #
 # Готовые файлы окажутся в:
 #   Release/bin/sqlite3_cli[.exe], Release/bin/sqlite3.dll, Release/lib/libsqlite3.[so|lib]
