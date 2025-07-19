@@ -1,5 +1,5 @@
 - name: Install Docker Engine on Debian Bookworm
-  hosts: dev-vm
+  hosts: dev_vm
   become: true
 
   vars:
