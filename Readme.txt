@@ -448,4 +448,4 @@ root@bdda32ffd050:/src#
 
 vagrant init debian/bookworm64
 
-создали файл Vagrantfile с базовым наполнением
+создали файл Vagrantfile с базовым наполнением (закомментированным) для поднятия машины debian/bookworm64.
