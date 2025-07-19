@@ -628,3 +628,8 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 Таким образом мы выполнили 5 пункт, автоматизировав сборку ВМ через vagrant в среде VB.
 Перейдём к 6 пункту - настройке docker-технологии на машине через плейбук.
+
+Посде добавления файлов можно перезапустить машину с командой на provisioning:
+
+vagrant reload --provision
+
