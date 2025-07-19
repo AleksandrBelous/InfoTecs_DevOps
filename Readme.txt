@@ -552,6 +552,36 @@ simply run `vagrant up`.
 
 При проверке оказалось, что
 
-config.vm.synced_folder "./sqlite-amalgamation-3260000", "/vagrant_sqlite-amalgamation-3260000"
+config.vm.synced_folder "./sqlite-amalgamation-3260000", "/home/vagrant/sqlite-amalgamation-3260000"
 
 не смонтировалось, попробуем с аргументом type: "virtualbox"
+
+Но тоже не вышло, т.к. была ошибка в скрипте
+
+~/.vagrant.d/gems/3.4.4/gems/vagrant-vbguest-0.32.0/lib/vagrant-vbguest/hosts/virtualbox.rb
+
+Необходимо было заменить старый синтаксис File.exists? на File.exist?
+
+После этих изменений и vagrant halt, vagrant up пошло скачивание гостевого дополнения:
+
+Downloading VirtualBox Guest Additions ISO from https://download.virtualbox.org/virtualbox/7.1.10/VBoxGuestAdditions_7.1.10.iso
+
+Наконец после завершения установки гостевого дополнения получили:
+
+Restarting VM to apply changes...
+==> default: Attempting graceful shutdown of VM...
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+==> default: Machine booted and ready!
+==> default: Checking for guest additions in VM...
+==> default: Configuring and enabling network interfaces...
+==> default: Mounting shared folders...
+    default: /home/nemo/Стажировка InfoTecs => /vagrant
+    default: /home/nemo/Стажировка InfoTecs/sqlite-amalgamation-3260000 => /home/vagrant/sqlite-amalgamation-3260000
+
+==> default: Machine 'default' has a post `vagrant up` message. This is a message
+==> default: from the creator of the Vagrantfile, and not from Vagrant itself:
+==> default:
+==> default: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
+
+Общая папка с докером и исходниками примонтировалась!
