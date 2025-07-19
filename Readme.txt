@@ -443,3 +443,9 @@ sqlite> .exit
 root@bdda32ffd050:/src# ldd ./Release/bin/sqlite3_cli | grep libsqlite3.so
         libsqlite3.so => /src/./Release/bin/../lib/libsqlite3.so (0x00007fb72337f000)
 root@bdda32ffd050:/src#
+
+Выполняем далее 5 пункт - через vagrant поднимем машину в среде VB.
+
+vagrant init debian/bookworm64
+
+создали файл Vagrantfile с базовым наполнением
