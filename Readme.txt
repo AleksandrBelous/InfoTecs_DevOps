@@ -540,6 +540,21 @@ Get:7 https://deb.debian.org/debian bookworm/main Sources [9494 kB]
 
 и т.д.
 
+ошибки:
+
+E: Unable to locate package linux-headers-6.1.0-29-amd64
+E: Couldn't find any package by glob 'linux-headers-6.1.0-29-amd64'
+E: Couldn't find any package by regex 'linux-headers-6.1.0-29-amd64'
+E: Unable to locate package build-essential
+
+пока исправили, вручную через ssh выполнив обновление и установку заголовков ядра:
+
+vagrant ssh
+sudo apt update -y
+sudo apt install linux-headers-amd64 build-essential dkms -y
+
+Далее после каждого vagrant reload машина перезапускалась без ошибок
+
 vagrant status
 Current machine states:
 
@@ -566,7 +581,7 @@ config.vm.synced_folder "./sqlite-amalgamation-3260000", "/home/vagrant/sqlite-a
 
 Downloading VirtualBox Guest Additions ISO from https://download.virtualbox.org/virtualbox/7.1.10/VBoxGuestAdditions_7.1.10.iso
 
-Наконец после завершения установки гостевого дополнения получили:
+Наконец после завершения установки гостевого дополнения и перезагрузки получили:
 
 Restarting VM to apply changes...
 ==> default: Attempting graceful shutdown of VM...
@@ -633,7 +648,7 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 vagrant reload --provision
 
-Пришлось переписать
+Пришлось переписать inventory.ini, содержащий идентификатор bookworm (а у нас машина осталась default):
 
 [dev_vm]
 default
@@ -642,7 +657,7 @@ ansible_user=vagrant
 ansible_ssh_private_key_file=./.vagrant/machines/bookworm/virtualbox/private_key
 ansible_python_interpreter=/usr/bin/python3
 
-на новый вариант
+на новый вариант, с парвильным идентификатором default:
 
 [dev_vm]
 default ansible_host=192.168.56.10
@@ -739,5 +754,126 @@ default                    : ok=16   changed=8    unreachable=0    failed=0    s
 ==> default: from the creator of the Vagrantfile, and not from Vagrant itself:
 ==> default:
 ==> default: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
+
+Попробуем сделать так, чтобы Vagrant-идентификатор ВМ поменялся с default на bookworm, и везде это было корректно.
+Для этого в Vagrantfile обернём атрибуты ВМ в config.vm.define "bookworm" do |bookworm|.
+
+После удаления машины default и создания новой bookworm во время её запуска она, также, как и default,
+запускается, но не может установить автоматически нужные заголовки ядра через гостевое дополнение.
+Мы ранее это делали вручную через vagrant ssh, но хочется автоматизации после vagrant up, поэтому просто внесём в Vagrantfile:
+
+config.vbguest.auto_update = false   # не проверять обновления гостевого дополнения
+config.vbguest.no_install  = true    # и вовсе не пытаться устанавливать дополнение
+
+Теперь попробуем заново собрать ВМ, запустив provisioning сразу после запуска
+
+vagrant destroy -f
+vagrant up --provider=virtualbox --provision
+
+Bringing machine 'bookworm' up with 'virtualbox' provider...
+==> bookworm: Importing base box 'debian/bookworm64'...
+==> bookworm: Matching MAC address for NAT networking...
+==> bookworm: Checking if box 'debian/bookworm64' version '12.20250126.1' is up to date...
+==> bookworm: Setting the name of the VM: _InfoTecs_bookworm_1753006451475_16063
+==> bookworm: Clearing any previously set network interfaces...
+==> bookworm: Preparing network interfaces based on configuration...
+    bookworm: Adapter 1: nat
+    bookworm: Adapter 2: hostonly
+==> bookworm: Forwarding ports...
+    bookworm: 22 (guest) => 2222 (host) (adapter 1)
+==> bookworm: Running 'pre-boot' VM customizations...
+==> bookworm: Booting VM...
+==> bookworm: Waiting for machine to boot. This may take a few minutes...
+    bookworm: SSH address: 127.0.0.1:2222
+    bookworm: SSH username: vagrant
+    bookworm: SSH auth method: private key
+    bookworm:
+    bookworm: Vagrant insecure key detected. Vagrant will automatically replace
+    bookworm: this with a newly generated keypair for better security.
+    bookworm:
+    bookworm: Inserting generated public key within guest...
+    bookworm: Removing insecure key from the guest if it's present...
+    bookworm: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> bookworm: Machine booted and ready!
+==> bookworm: Checking for guest additions in VM...
+    bookworm: The guest additions on this VM do not match the installed version of
+    bookworm: VirtualBox! In most cases this is fine, but in rare cases it can
+    bookworm: prevent things such as shared folders from working properly. If you see
+    bookworm: shared folder errors, please make sure the guest additions within the
+    bookworm: virtual machine match the version of VirtualBox you have installed on
+    bookworm: your host and reload your VM.
+    bookworm:
+    bookworm: Guest Additions Version: 6.0.0 r127566
+    bookworm: VirtualBox Version: 7.1
+==> bookworm: Setting hostname...
+==> bookworm: Configuring and enabling network interfaces...
+==> bookworm: Installing rsync to the VM...
+==> bookworm: Rsyncing folder: /home/nemo/Стажировка_InfoTecs/sqlite-amalgamation-3260000/ => /home/vagrant/sqlite-amalgamation-3260000
+==> bookworm:   - Exclude: [".vagrant/", "Release", "build", "logs_lin", "logs_win"]
+==> bookworm: Mounting shared folders...
+    bookworm: /home/nemo/Стажировка_InfoTecs => /vagrant
+==> bookworm: Running provisioner: ansible...
+    bookworm: Running ansible-playbook...
+
+PLAY [Install Docker Engine on Debian Bookworm] ********************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [bookworm]
+
+TASK [Install required dependencies] *******************************************
+changed: [bookworm]
+
+TASK [Create keyrings directory] ***********************************************
+ok: [bookworm]
+
+TASK [Download Docker GPG key] *************************************************
+changed: [bookworm]
+
+TASK [Make GPG key readable] ***************************************************
+ok: [bookworm]
+
+TASK [Get system architecture] *************************************************
+ok: [bookworm]
+
+TASK [Get Debian version codename] *********************************************
+ok: [bookworm]
+
+TASK [Add Docker repository to sources.list.d] *********************************
+changed: [bookworm]
+
+TASK [Update apt package index] ************************************************
+changed: [bookworm]
+
+TASK [Install Docker and plugins] **********************************************
+changed: [bookworm]
+
+TASK [Enable and start Docker] *************************************************
+ok: [bookworm]
+
+TASK [Add current user to docker group] ****************************************
+changed: [bookworm]
+
+TASK [Set Docker daemon config] ************************************************
+changed: [bookworm]
+
+TASK [Run hello-world container] ***********************************************
+ok: [bookworm]
+
+TASK [Show test output] ********************************************************
+ok: [bookworm] => {
+    "hello.stdout": "\nHello from Docker!\nThis message shows that your installation appears to be working correctly.\n\nTo generate this message, Docker took the following steps:\n 1. The Docker client contacted the Docker daemon.\n 2. The Docker daemon pulled the \"hello-world\" image from the Docker Hub.\n    (amd64)\n 3. The Docker daemon created a new container from that image which runs the\n    executable that produces the output you are currently reading.\n 4. The Docker daemon streamed that output to the Docker client, which sent it\n    to your terminal.\n\nTo try something more ambitious, you can run an Ubuntu container with:\n $ docker run -it ubuntu bash\n\nShare images, automate workflows, and more with a free Docker ID:\n https://hub.docker.com/\n\nFor more examples and ideas, visit:\n https://docs.docker.com/get-started/"
+}
+
+RUNNING HANDLER [Restart Docker] ***********************************************
+changed: [bookworm]
+
+PLAY RECAP *********************************************************************
+bookworm                   : ok=16   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+
+==> bookworm: Machine 'bookworm' has a post `vagrant up` message. This is a message
+==> bookworm: from the creator of the Vagrantfile, and not from Vagrant itself:
+==> bookworm:
+==> bookworm: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
 
 Супер. Перейдём к 7 пункту -
