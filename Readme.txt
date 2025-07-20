@@ -2,7 +2,7 @@
 Для начала посмотрим, как это можно делать вручную через терминал, без CMakeLists.
 1. Создаём саму динамическую библиотеку:
 - нужен файл объединения sqlite3.c
-- ключи -fPIC для ...
+- ключи -fPIC делает машинный код пригодным для размещения в любом участке памяти - требование для .so.
 - аргумент -shared, потому что у нас shared-библиотека
 - ключи -lpthread -ldl -lm как в руководстве sqlite.org (-lpthread для подключения pthread, -ldl -lm)
 
@@ -43,7 +43,7 @@ gcc shell.c -I ./ -L ./ -lsqlite3 -lpthread -ldl -lm -o sqlite3
 Версию, с которой программа реально работает, определяет динамический загрузчик во время запуска.
 
 Добавим -Wl,-rpath,'$ORIGIN', что говорит динамическому загрузчику искать .so в том же каталоге, где и бинарник.
-При этом $ORIGIN подставляется загрузчиком на лету.
+(-Wl передаёт аргументы линковщику). При этом $ORIGIN подставляется загрузчиком на лету.
 
 gcc -fPIC -shared sqlite3.c -lpthread -ldl -lm -o libsqlite3.so
 gcc shell.c -I ./ -L ./ -lsqlite3 -lpthread -ldl -lm -Wl,-rpath,'$ORIGIN' -o sqlite3
@@ -1063,7 +1063,6 @@ target_link_libraries(main fmt::fmt)
     build/
       Release/
         generators/
-
 
 Пробуем conan install .. --build=missing
 ERROR: The default build profile '/home/nemo/.conan2/profiles/default' doesn't exist.
