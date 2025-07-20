@@ -1051,6 +1051,20 @@ find_package(fmt REQUIRED)
 add_executable(main ../main.cpp)
 target_link_libraries(main fmt::fmt)
 
+Подготовим conanfile.py под стандарты Conan версии 2.х.
+Импортируем cmake_layout — задаёт структуру проекта (куда класть build, bin, lib и т.д.).
+Основной класс наследуем от ConanFile и укажем settings = "os", "compiler", "build_type", "arch".
+Также выберем CMakeDeps, который создаёт find_package() для fmt, чтобы CMake мог их найти и CMakeToolchain,
+который создаёт conan_toolchain.cmake с нужными флагами и переменными.
+
+метод def layout(self):
+          cmake_layout(self)
+нужен для предсказуемой архитектуры проекта:
+    build/
+      Release/
+        generators/
+
+
 Пробуем conan install .. --build=missing
 ERROR: The default build profile '/home/nemo/.conan2/profiles/default' doesn't exist.
 You need to create a default profile (type 'conan profile detect' command)
