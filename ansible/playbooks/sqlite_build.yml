@@ -1,0 +1,45 @@
+- name: Build SQLite inside Docker
+  hosts: dev_vm
+  become: true
+
+  vars:
+    project_dir: /home/vagrant/sqlite-amalgamation-3260000
+    sqlite_zip_url: https://www.sqlite.org/2018/sqlite-amalgamation-3260000.zip
+    docker_image_name: sqlite-container
+    docker_src_path: /src  # корень проекта внутри контейнера, где будет Release
+
+  tasks:
+    - name: Ensure unzip is installed
+      apt:
+        name: unzip
+        state: present
+        update_cache: true
+
+    - name: Download SQLite source archive
+      get_url:
+        url: "{{ sqlite_zip_url }}"
+        dest: "{{ project_dir }}/sqlite.zip"
+        mode: '0644'
+
+    - name: Unpack SQLite archive
+      unarchive:
+        src: "{{ project_dir }}/sqlite.zip"
+        dest: "{{ project_dir }}"
+        remote_src: yes
+        extra_opts: [ "-o" ]  # overwrite
+
+    - name: Build Docker image for SQLite
+      community.docker.docker_image:
+        build:
+          path: "{{ project_dir }}"
+        name: "{{ docker_image_name }}"
+        source: build
+
+    - name: Run built container and check SQLite version
+      command: docker run --rm {{ docker_image_name }} {{ docker_src_path }}/Release/bin/sqlite3_cli --version
+      register: sqlite_version_output
+      changed_when: false
+
+    - name: Show SQLite version
+      debug:
+        var: sqlite_version_output.stdout

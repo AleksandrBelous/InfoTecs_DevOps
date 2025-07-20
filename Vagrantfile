@@ -95,5 +95,11 @@ Vagrant.configure("2") do |config|
             ansible.inventory_path = "ansible/inventory.ini"
             ansible.limit = "bookworm" # запускаем плейбук только на хосте bookworm
         end
+
+        bookworm.vm.provision "ansible" do |ansible|
+            ansible.playbook = "ansible/playbooks/sqlite_build.yml"
+            ansible.inventory_path = "ansible/inventory.ini"
+            ansible.limit = "bookworm"
+        end
     end
 end
