@@ -650,3 +650,94 @@ default ansible_host=192.168.56.10
 ansible_user=vagrant
 ansible_ssh_private_key_file=./.vagrant/machines/default/virtualbox/private_key
 ansible_python_interpreter=/usr/bin/python3
+
+И наконец получаем рабочий плейбук для 6 задания: vagrant reload --provision
+
+==> default: Attempting graceful shutdown of VM...
+==> default: Forcing shutdown of VM...
+==> default: Clearing any previously set forwarded ports...
+==> default: Clearing any previously set network interfaces...
+==> default: Preparing network interfaces based on configuration...
+    default: Adapter 1: nat
+    default: Adapter 2: hostonly
+==> default: Forwarding ports...
+    default: 22 (guest) => 2222 (host) (adapter 1)
+==> default: Running 'pre-boot' VM customizations...
+==> default: Booting VM...
+==> default: Waiting for machine to boot. This may take a few minutes...
+    default: SSH address: 127.0.0.1:2222
+    default: SSH username: vagrant
+    default: SSH auth method: private key
+==> default: Machine booted and ready!
+[default] GuestAdditions 7.1.10 running --- OK.
+==> default: Checking for guest additions in VM...
+==> default: Configuring and enabling network interfaces...
+==> default: Rsyncing folder: /home/nemo/Стажировка_InfoTecs/sqlite-amalgamation-3260000/ => /home/vagrant/sqlite-amalgamation-3260000
+==> default:   - Exclude: [".vagrant/", "Release", "build", "logs_lin", "logs_win"]
+==> default: Mounting shared folders...
+    default: /home/nemo/Стажировка_InfoTecs => /vagrant
+==> default: Running provisioner: ansible...
+    default: Running ansible-playbook...
+
+PLAY [Install Docker Engine on Debian Bookworm] ********************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [default]
+
+TASK [Install required dependencies] *******************************************
+changed: [default]
+
+TASK [Create keyrings directory] ***********************************************
+ok: [default]
+
+TASK [Download Docker GPG key] *************************************************
+changed: [default]
+
+TASK [Make GPG key readable] ***************************************************
+ok: [default]
+
+TASK [Get system architecture] *************************************************
+ok: [default]
+
+TASK [Get Debian version codename] *********************************************
+ok: [default]
+
+TASK [Add Docker repository to sources.list.d] *********************************
+changed: [default]
+
+TASK [Update apt package index] ************************************************
+changed: [default]
+
+TASK [Install Docker and plugins] **********************************************
+changed: [default]
+
+TASK [Enable and start Docker] *************************************************
+ok: [default]
+
+TASK [Add current user to docker group] ****************************************
+changed: [default]
+
+TASK [Set Docker daemon config] ************************************************
+changed: [default]
+
+TASK [Run hello-world container] ***********************************************
+ok: [default]
+
+TASK [Show test output] ********************************************************
+ok: [default] => {
+    "hello.stdout": "\nHello from Docker!\nThis message shows that your installation appears to be working correctly.\n\nTo generate this message, Docker took the following steps:\n 1. The Docker client contacted the Docker daemon.\n 2. The Docker daemon pulled the \"hello-world\" image from the Docker Hub.\n    (amd64)\n 3. The Docker daemon created a new container from that image which runs the\n    executable that produces the output you are currently reading.\n 4. The Docker daemon streamed that output to the Docker client, which sent it\n    to your terminal.\n\nTo try something more ambitious, you can run an Ubuntu container with:\n $ docker run -it ubuntu bash\n\nShare images, automate workflows, and more with a free Docker ID:\n https://hub.docker.com/\n\nFor more examples and ideas, visit:\n https://docs.docker.com/get-started/"
+}
+
+RUNNING HANDLER [Restart Docker] ***********************************************
+changed: [default]
+
+PLAY RECAP *********************************************************************
+default                    : ok=16   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+
+==> default: Machine 'default' has a post `vagrant up` message. This is a message
+==> default: from the creator of the Vagrantfile, and not from Vagrant itself:
+==> default:
+==> default: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
+
+Супер. Перейдём к 7 пункту -
