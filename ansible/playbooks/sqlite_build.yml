@@ -39,8 +39,8 @@
         path: "{{ project_dir }}/sqlite.zip"
         state: absent
 
-    - name: Move extracted files from nested folder to main project_dir
-      command: mv {{ project_dir }}/tmp_unzip/sqlite-amalgamation-3260000/* {{ project_dir }}/
+    - name: Move extracted files from tmp folder to main project_dir
+      command: rsync -a {{ project_dir }}/tmp_unzip/sqlite-amalgamation-3260000/ {{ project_dir }}/
 
     - name: Remove temp unzip directory
       file:

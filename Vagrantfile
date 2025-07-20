@@ -56,7 +56,7 @@ Vagrant.configure("2") do |config|
         # config.vm.synced_folder "../data", "/vagrant_data"
         bookworm.vm.synced_folder "./sqlite-amalgamation-3260000/", "/home/vagrant/sqlite-amalgamation-3260000/",
             type: "rsync",
-            rsync__exclude: ["Release", "build", "logs_lin", "logs_win"]
+            rsync__exclude: ["Release", "build", "logs_lin", "logs_win", "*.c", "*.h"]
 
         # Disable the default share of the current code directory. Doing this
         # provides improved isolation between the vagrant box and your host

@@ -890,7 +890,7 @@ Bringing machine 'bookworm' up with 'virtualbox' provider...
 ==> bookworm: Importing base box 'debian/bookworm64'...
 ==> bookworm: Matching MAC address for NAT networking...
 ==> bookworm: Checking if box 'debian/bookworm64' version '12.20250126.1' is up to date...
-==> bookworm: Setting the name of the VM: _InfoTecs_bookworm_1753010263997_20893
+==> bookworm: Setting the name of the VM: _InfoTecs_bookworm_1753013867414_63385
 ==> bookworm: Clearing any previously set network interfaces...
 ==> bookworm: Preparing network interfaces based on configuration...
     bookworm: Adapter 1: nat
@@ -925,7 +925,7 @@ Bringing machine 'bookworm' up with 'virtualbox' provider...
 ==> bookworm: Configuring and enabling network interfaces...
 ==> bookworm: Installing rsync to the VM...
 ==> bookworm: Rsyncing folder: /home/nemo/Стажировка_InfoTecs/sqlite-amalgamation-3260000/ => /home/vagrant/sqlite-amalgamation-3260000
-==> bookworm:   - Exclude: [".vagrant/", "Release", "build", "logs_lin", "logs_win"]
+==> bookworm:   - Exclude: [".vagrant/", "Release", "build", "logs_lin", "logs_win", "*.c", "*.h"]
 ==> bookworm: Mounting shared folders...
     bookworm: /home/nemo/Стажировка_InfoTecs => /vagrant
 ==> bookworm: Running provisioner: ansible...
@@ -1000,7 +1000,19 @@ changed: [bookworm]
 TASK [Download SQLite source archive] ******************************************
 changed: [bookworm]
 
+TASK [Create temp dir for unzip] ***********************************************
+changed: [bookworm]
+
 TASK [Unpack SQLite archive] ***************************************************
+changed: [bookworm]
+
+TASK [Remove sqlite.zip directory] *********************************************
+changed: [bookworm]
+
+TASK [Move extracted files from tmp folder to main project_dir] ****************
+changed: [bookworm]
+
+TASK [Remove temp unzip directory] *********************************************
 changed: [bookworm]
 
 TASK [Build Docker image for SQLite] *******************************************
@@ -1015,7 +1027,7 @@ ok: [bookworm] => {
 }
 
 PLAY RECAP *********************************************************************
-bookworm                   : ok=7    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+bookworm                   : ok=11   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
 
 
 ==> bookworm: Machine 'bookworm' has a post `vagrant up` message. This is a message
@@ -1024,3 +1036,7 @@ bookworm                   : ok=7    changed=4    unreachable=0    failed=0    s
 ==> bookworm: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
 
 Отлично. Пункт 7 мы выполнили.
+
+Историю выполнения задания можно отследить, воспользовавшись репозиторием:
+
+https://github.com/AleksandrBelous/InfoTecs_DevOps
