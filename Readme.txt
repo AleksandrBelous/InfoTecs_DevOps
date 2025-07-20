@@ -876,4 +876,151 @@ bookworm                   : ok=16   changed=8    unreachable=0    failed=0    s
 ==> bookworm:
 ==> bookworm: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
 
-Супер. Перейдём к 7 пункту -
+Супер. Перейдём к 7 пункту - создадим ещё один .yml, через который автоматизируем на Vagrant-машине
+скачивание исходников, построение докер-контейнера для sqlite, а также запуск sqlite с линковкой к libsqlite.so,
+запуск контейнера и проверку корректности работы бинарника.
+Для этого создали sqlite_build.yml, где добавили шаги по скачиванию архива и построению контейнера.
+Главное - не запутаться в относительных путях рабочих папок виртуальной среды внутри виртуальной среды...
+Наконец, тестируем:
+
+vagrant destroy -f
+vagrant up --provider=virtualbox --provision
+
+Bringing machine 'bookworm' up with 'virtualbox' provider...
+==> bookworm: Importing base box 'debian/bookworm64'...
+==> bookworm: Matching MAC address for NAT networking...
+==> bookworm: Checking if box 'debian/bookworm64' version '12.20250126.1' is up to date...
+==> bookworm: Setting the name of the VM: _InfoTecs_bookworm_1753010263997_20893
+==> bookworm: Clearing any previously set network interfaces...
+==> bookworm: Preparing network interfaces based on configuration...
+    bookworm: Adapter 1: nat
+    bookworm: Adapter 2: hostonly
+==> bookworm: Forwarding ports...
+    bookworm: 22 (guest) => 2222 (host) (adapter 1)
+==> bookworm: Running 'pre-boot' VM customizations...
+==> bookworm: Booting VM...
+==> bookworm: Waiting for machine to boot. This may take a few minutes...
+    bookworm: SSH address: 127.0.0.1:2222
+    bookworm: SSH username: vagrant
+    bookworm: SSH auth method: private key
+    bookworm:
+    bookworm: Vagrant insecure key detected. Vagrant will automatically replace
+    bookworm: this with a newly generated keypair for better security.
+    bookworm:
+    bookworm: Inserting generated public key within guest...
+    bookworm: Removing insecure key from the guest if it's present...
+    bookworm: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> bookworm: Machine booted and ready!
+==> bookworm: Checking for guest additions in VM...
+    bookworm: The guest additions on this VM do not match the installed version of
+    bookworm: VirtualBox! In most cases this is fine, but in rare cases it can
+    bookworm: prevent things such as shared folders from working properly. If you see
+    bookworm: shared folder errors, please make sure the guest additions within the
+    bookworm: virtual machine match the version of VirtualBox you have installed on
+    bookworm: your host and reload your VM.
+    bookworm:
+    bookworm: Guest Additions Version: 6.0.0 r127566
+    bookworm: VirtualBox Version: 7.1
+==> bookworm: Setting hostname...
+==> bookworm: Configuring and enabling network interfaces...
+==> bookworm: Installing rsync to the VM...
+==> bookworm: Rsyncing folder: /home/nemo/Стажировка_InfoTecs/sqlite-amalgamation-3260000/ => /home/vagrant/sqlite-amalgamation-3260000
+==> bookworm:   - Exclude: [".vagrant/", "Release", "build", "logs_lin", "logs_win"]
+==> bookworm: Mounting shared folders...
+    bookworm: /home/nemo/Стажировка_InfoTecs => /vagrant
+==> bookworm: Running provisioner: ansible...
+    bookworm: Running ansible-playbook...
+
+PLAY [Install Docker Engine on Debian Bookworm] ********************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [bookworm]
+
+TASK [Install required dependencies] *******************************************
+changed: [bookworm]
+
+TASK [Create keyrings directory] ***********************************************
+ok: [bookworm]
+
+TASK [Download Docker GPG key] *************************************************
+changed: [bookworm]
+
+TASK [Make GPG key readable] ***************************************************
+ok: [bookworm]
+
+TASK [Get system architecture] *************************************************
+ok: [bookworm]
+
+TASK [Get Debian version codename] *********************************************
+ok: [bookworm]
+
+TASK [Add Docker repository to sources.list.d] *********************************
+changed: [bookworm]
+
+TASK [Update apt package index] ************************************************
+changed: [bookworm]
+
+TASK [Install Docker and plugins] **********************************************
+changed: [bookworm]
+
+TASK [Enable and start Docker] *************************************************
+ok: [bookworm]
+
+TASK [Add current user to docker group] ****************************************
+changed: [bookworm]
+
+TASK [Set Docker daemon config] ************************************************
+changed: [bookworm]
+
+TASK [Run hello-world container] ***********************************************
+ok: [bookworm]
+
+TASK [Show test output] ********************************************************
+ok: [bookworm] => {
+    "hello.stdout": "\nHello from Docker!\nThis message shows that your installation appears to be working correctly.\n\nTo generate this message, Docker took the following steps:\n 1. The Docker client contacted the Docker daemon.\n 2. The Docker daemon pulled the \"hello-world\" image from the Docker Hub.\n    (amd64)\n 3. The Docker daemon created a new container from that image which runs the\n    executable that produces the output you are currently reading.\n 4. The Docker daemon streamed that output to the Docker client, which sent it\n    to your terminal.\n\nTo try something more ambitious, you can run an Ubuntu container with:\n $ docker run -it ubuntu bash\n\nShare images, automate workflows, and more with a free Docker ID:\n https://hub.docker.com/\n\nFor more examples and ideas, visit:\n https://docs.docker.com/get-started/"
+}
+
+RUNNING HANDLER [Restart Docker] ***********************************************
+changed: [bookworm]
+
+PLAY RECAP *********************************************************************
+bookworm                   : ok=16   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+==> bookworm: Running provisioner: ansible...
+    bookworm: Running ansible-playbook...
+
+PLAY [Build SQLite inside Docker] **********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [bookworm]
+
+TASK [Ensure unzip is installed] ***********************************************
+changed: [bookworm]
+
+TASK [Download SQLite source archive] ******************************************
+changed: [bookworm]
+
+TASK [Unpack SQLite archive] ***************************************************
+changed: [bookworm]
+
+TASK [Build Docker image for SQLite] *******************************************
+changed: [bookworm]
+
+TASK [Run built container and check SQLite version] ****************************
+ok: [bookworm]
+
+TASK [Show SQLite version] *****************************************************
+ok: [bookworm] => {
+    "sqlite_version_output.stdout": "3.26.0 2018-12-01 12:34:55 bf8c1b2b7a5960c282e543b9c293686dccff272512d08865f4600fb58238b4f9"
+}
+
+PLAY RECAP *********************************************************************
+bookworm                   : ok=7    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+
+
+==> bookworm: Machine 'bookworm' has a post `vagrant up` message. This is a message
+==> bookworm: from the creator of the Vagrantfile, and not from Vagrant itself:
+==> bookworm:
+==> bookworm: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
+
+Отлично. Пункт 7 мы выполнили.
