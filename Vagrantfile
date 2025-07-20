@@ -58,7 +58,6 @@ Vagrant.configure("2") do |config|
             type: "rsync",
             rsync__exclude: ["Release", "build", "logs_lin", "logs_win"]
 
-
         # Disable the default share of the current code directory. Doing this
         # provides improved isolation between the vagrant box and your host
         # by making sure your Vagrantfile isn't accessible to the vagrant box.
