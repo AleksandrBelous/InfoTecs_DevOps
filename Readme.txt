@@ -633,3 +633,20 @@ Bringing machine 'default' up with 'virtualbox' provider...
 
 vagrant reload --provision
 
+Пришлось переписать
+
+[dev_vm]
+default
+ansible_host=192.168.56.10
+ansible_user=vagrant
+ansible_ssh_private_key_file=./.vagrant/machines/bookworm/virtualbox/private_key
+ansible_python_interpreter=/usr/bin/python3
+
+на новый вариант
+
+[dev_vm]
+default ansible_host=192.168.56.10
+[dev_vm:vars]
+ansible_user=vagrant
+ansible_ssh_private_key_file=./.vagrant/machines/default/virtualbox/private_key
+ansible_python_interpreter=/usr/bin/python3
