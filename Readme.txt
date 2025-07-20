@@ -1036,6 +1036,235 @@ bookworm                   : ok=11   changed=8    unreachable=0    failed=0    s
 ==> bookworm: Vanilla Debian box. See https://app.vagrantup.com/debian for help and bug reports
 
 Отлично. Пункт 7 мы выполнили.
+Перейдём к п. 8. Подготовим простую Hello, World! программу на C++, которая использует стороннюю библиотеку fmt.
+Далее соберём бинарный файл этой программы с использованием conanfile.py, а также CMake и gcc в ОС Linux.
+
+conan --version
+Conan version 2.18.0
+
+Будем готовить CMakeLists к Conan версии 2.х.
+
+cmake_minimum_required(VERSION 3.15)
+project(ConanExample)
+# Conan 2.x автоматически найдёт зависимости через find_package()
+find_package(fmt REQUIRED)
+add_executable(main ../main.cpp)
+target_link_libraries(main fmt::fmt)
+
+Пробуем conan install .. --build=missing
+ERROR: The default build profile '/home/nemo/.conan2/profiles/default' doesn't exist.
+You need to create a default profile (type 'conan profile detect' command)
+or specify your own profile with '--profile:build=<myprofile>'
+
+нужно сначала создать профиль с gcc, сделаем это: conan profile detect
+detect_api: Found cc=gcc-15.1.1
+detect_api: gcc>=5, using the major as version
+detect_api: gcc C++ standard library: libstdc++11
+
+Detected profile:
+[settings]
+arch=x86_64
+build_type=Release
+compiler=gcc
+compiler.cppstd=gnu17
+compiler.libcxx=libstdc++11
+compiler.version=15
+os=Linux
+
+WARN: This profile is a guess of your environment, please check it.
+WARN: The output of this command is not guaranteed to be stable and can change in future Conan versions.
+WARN: Use your own profile files for stability.
+Saving detected profile to /home/nemo/.conan2/profiles/default
+
+Далее устанавливаем зависимсоти черех Conan: conan install .. --build=missing
+
+======== Input profiles ========
+Profile host:
+[settings]
+arch=x86_64
+build_type=Release
+compiler=gcc
+compiler.cppstd=gnu17
+compiler.libcxx=libstdc++11
+compiler.version=15
+os=Linux
+
+Profile build:
+[settings]
+arch=x86_64
+build_type=Release
+compiler=gcc
+compiler.cppstd=gnu17
+compiler.libcxx=libstdc++11
+compiler.version=15
+os=Linux
+
+======== Computing dependency graph ========
+fmt/10.2.1: Not found in local cache, looking in remotes...
+fmt/10.2.1: Checking remote: conancenter
+Connecting to remote 'conancenter' anonymously
+fmt/10.2.1: Downloaded recipe revision 658771bb858b77f380be2ebb22c338e9
+Graph root
+    conanfile.py (example/0.1): /home/nemo/Стажировка_InfoTecs/task-8_cpp-conan/conanfile.py
+Requirements
+    fmt/10.2.1#658771bb858b77f380be2ebb22c338e9 - Downloaded (conancenter)
+
+======== Computing necessary packages ========
+fmt/10.2.1: Main binary package '64947a41c7caa014aadbeaa53f1602ad0d30673d' missing
+fmt/10.2.1: Checking 11 compatible configurations
+fmt/10.2.1: Compatible configurations not found in cache, checking servers
+fmt/10.2.1: '1746764b22461b97152c44a466f8880da78596af': compiler.cppstd=11
+fmt/10.2.1: 'a75c163fca6c43b56555004d4e598ecebf1b61bc': compiler.cppstd=gnu11
+fmt/10.2.1: '4bdc48bcef47853185b2b542b1b07cc40a825d4e': compiler.cppstd=14
+fmt/10.2.1: 'ab5de0a28845cfe70c4220a4404978334a81bbec': compiler.cppstd=gnu14
+fmt/10.2.1: '0364e7f8fc1c021fe93b04ad01169c39bb69a007': compiler.cppstd=17
+fmt/10.2.1: '206c484e1c46c66d8bbeb62b2b76a229b17405be': compiler.cppstd=20
+fmt/10.2.1: '41ff7e43e206751914e2a03f64f9235533be81d7': compiler.cppstd=gnu20
+fmt/10.2.1: 'f679fbaf71726502d3ee047968670c713d088ed0': compiler.cppstd=23
+fmt/10.2.1: '8b2f5bde089ee1b2f7efa90c14e5045983e3bee8': compiler.cppstd=gnu23
+fmt/10.2.1: 'f3e8a9c90ac4f8313361cbf0add1c47531ac9290': compiler.cppstd=26
+fmt/10.2.1: 'c7d145c3e80c4c9ec23f5e5103a7d19e7a803a58': compiler.cppstd=gnu26
+Requirements
+    fmt/10.2.1#658771bb858b77f380be2ebb22c338e9:64947a41c7caa014aadbeaa53f1602ad0d30673d - Build
+
+======== Installing packages ========
+fmt/10.2.1: Sources downloaded from 'conancenter'
+fmt/10.2.1: Calling source() in /home/nemo/.conan2/p/fmtfd0fc8a6cd618/s/src
+fmt/10.2.1: Uncompressing fmt-10.2.1.zip to .
+fmt/10.2.1: Unzipping 4.6MB, this can take a while
+
+-------- Installing package fmt/10.2.1 (1 of 1) --------
+fmt/10.2.1: Building from source
+fmt/10.2.1: Package fmt/10.2.1:64947a41c7caa014aadbeaa53f1602ad0d30673d
+fmt/10.2.1: settings: os=Linux arch=x86_64 compiler=gcc compiler.cppstd=gnu17 compiler.libcxx=libstdc++11 compiler.version=15 build_type=Release
+fmt/10.2.1: options: fPIC=True header_only=False shared=False with_os_api=True
+fmt/10.2.1: Copying sources to build folder
+fmt/10.2.1: Building your package in /home/nemo/.conan2/p/b/fmt35611ed019e18/b
+fmt/10.2.1: Calling generate()
+fmt/10.2.1: Generators folder: /home/nemo/.conan2/p/b/fmt35611ed019e18/b/build/Release/generators
+fmt/10.2.1: CMakeToolchain generated: conan_toolchain.cmake
+fmt/10.2.1: CMakeToolchain generated: /home/nemo/.conan2/p/b/fmt35611ed019e18/b/build/Release/generators/CMakePresets.json
+fmt/10.2.1: CMakeToolchain generated: /home/nemo/.conan2/p/b/fmt35611ed019e18/b/src/CMakeUserPresets.json
+fmt/10.2.1: Generating aggregated env files
+fmt/10.2.1: Generated aggregated env files: ['conanbuild.sh', 'conanrun.sh']
+fmt/10.2.1: Calling build()
+fmt/10.2.1: apply_conandata_patches(): No patches defined in conandata
+fmt/10.2.1: Running CMake.configure()
+fmt/10.2.1: RUN: cmake -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE="generators/conan_toolchain.cmake" -DCMAKE_INSTALL_PREFIX="/home/nemo/.conan2/p/b/fmt35611ed019e18/p" -DFMT_DOC="OFF" -DFMT_TEST="OFF" -DFMT_INSTALL="ON" -DFMT_LIB_DIR="lib" -DFMT_OS="ON" -DCMAKE_POLICY_DEFAULT_CMP0091="NEW" -DCMAKE_BUILD_TYPE="Release" "/home/nemo/.conan2/p/b/fmt35611ed019e18/b/src"
+-- CMake version: 4.0.3-dirty
+-- Using Conan toolchain: /home/nemo/.conan2/p/b/fmt35611ed019e18/b/build/Release/generators/conan_toolchain.cmake
+-- Conan toolchain: Setting CMAKE_POSITION_INDEPENDENT_CODE=ON (options.fPIC)
+-- Conan toolchain: Defining architecture flag: -m64
+-- Conan toolchain: C++ Standard 17 with extensions ON
+-- Conan toolchain: Setting BUILD_SHARED_LIBS = OFF
+-- The CXX compiler identification is GNU 15.1.1
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Version: 10.2.1
+-- Build type: Release
+-- Configuring done (0.4s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/nemo/.conan2/p/b/fmt35611ed019e18/b/build/Release
+
+fmt/10.2.1: Running CMake.build()
+fmt/10.2.1: RUN: cmake --build "/home/nemo/.conan2/p/b/fmt35611ed019e18/b/build/Release" -- -j16
+[ 33%] Building CXX object CMakeFiles/fmt.dir/src/format.cc.o
+[ 66%] Building CXX object CMakeFiles/fmt.dir/src/os.cc.o
+[100%] Linking CXX static library libfmt.a
+[100%] Built target fmt
+
+fmt/10.2.1: Package '64947a41c7caa014aadbeaa53f1602ad0d30673d' built
+fmt/10.2.1: Build folder /home/nemo/.conan2/p/b/fmt35611ed019e18/b/build/Release
+fmt/10.2.1: Generating the package
+fmt/10.2.1: Packaging in folder /home/nemo/.conan2/p/b/fmt35611ed019e18/p
+fmt/10.2.1: Calling package()
+fmt/10.2.1: Running CMake.install()
+fmt/10.2.1: RUN: cmake --install "/home/nemo/.conan2/p/b/fmt35611ed019e18/b/build/Release" --prefix "/home/nemo/.conan2/p/b/fmt35611ed019e18/p"
+-- Install configuration: "Release"
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/lib/libfmt.a
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/args.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/chrono.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/color.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/compile.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/core.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/format.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/format-inl.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/os.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/ostream.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/printf.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/ranges.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/std.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/include/fmt/xchar.h
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/lib/cmake/fmt/fmt-config.cmake
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/lib/cmake/fmt/fmt-config-version.cmake
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/lib/cmake/fmt/fmt-targets.cmake
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/lib/cmake/fmt/fmt-targets-release.cmake
+-- Installing: /home/nemo/.conan2/p/b/fmt35611ed019e18/p/lib/pkgconfig/fmt.pc
+
+fmt/10.2.1: package(): Packaged 1 '.a' file: libfmt.a
+fmt/10.2.1: package(): Packaged 1 file: LICENSE
+fmt/10.2.1: package(): Packaged 13 '.h' files
+fmt/10.2.1: Created package revision a7889d70ef4690019fe2d1ca16abad6c
+fmt/10.2.1: Package '64947a41c7caa014aadbeaa53f1602ad0d30673d' created
+fmt/10.2.1: Full package reference: fmt/10.2.1#658771bb858b77f380be2ebb22c338e9:64947a41c7caa014aadbeaa53f1602ad0d30673d#a7889d70ef4690019fe2d1ca16abad6c
+fmt/10.2.1: Package folder /home/nemo/.conan2/p/b/fmt35611ed019e18/p
+
+======== Finalizing install (deploy, generators) ========
+conanfile.py (example/0.1): Writing generators to /home/nemo/Стажировка_InfoTecs/task-8_cpp-conan/build/Release/generators
+conanfile.py (example/0.1): Generator 'CMakeDeps' calling 'generate()'
+conanfile.py (example/0.1): CMakeDeps necessary find_package() and targets for your CMakeLists.txt
+    find_package(fmt)
+    target_link_libraries(... fmt::fmt)
+conanfile.py (example/0.1): Generator 'CMakeToolchain' calling 'generate()'
+conanfile.py (example/0.1): CMakeToolchain generated: conan_toolchain.cmake
+conanfile.py (example/0.1): CMakeToolchain: Preset 'conan-release' added to CMakePresets.json.
+    (cmake>=3.23) cmake --preset conan-release
+    (cmake<3.23) cmake <path> -G "Unix Makefiles" -DCMAKE_TOOLCHAIN_FILE=generators/conan_toolchain.cmake  -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=Release
+conanfile.py (example/0.1): CMakeToolchain generated: /home/nemo/Стажировка_InfoTecs/task-8_cpp-conan/build/Release/generators/CMakePresets.json
+conanfile.py (example/0.1): CMakeToolchain generated: /home/nemo/Стажировка_InfoTecs/task-8_cpp-conan/CMakeUserPresets.json
+conanfile.py (example/0.1): Generating aggregated env files
+conanfile.py (example/0.1): Generated aggregated env files: ['conanbuild.sh', 'conanrun.sh']
+Install finished successfully
+
+Далее конфигурируем проект:  cmake .. -DCMAKE_TOOLCHAIN_FILE=Release/generators/conan_toolchain.cmake
+-- Using Conan toolchain: /home/nemo/Стажировка_InfoTecs/task-8_cpp-conan/build/Release/generators/conan_toolchain.cmake
+-- Conan toolchain: Defining architecture flag: -m64
+-- Conan toolchain: C++ Standard 17 with extensions ON
+-- Conan: Component target declared 'fmt::fmt'
+CMake Error at build/Release/generators/cmakedeps_macros.cmake:98 (message):
+  Please, set the CMAKE_BUILD_TYPE variable when calling to CMake adding the
+  '-DCMAKE_BUILD_TYPE=<build_type>' argument.
+Call Stack (most recent call first):
+  build/Release/generators/fmt-config.cmake:19 (check_build_type_defined)
+  CMakeLists.txt:5 (find_package)
+
+Получили ошибку: необходимо указать переменную CMAKE_BUILD_TYPE=Release, т.к.
+Conan сгенерировал зависимости для режима Release (у нас так ранее профиль Conan собрался)
+
+Запускаем конфигурацию опять: cmake .. \
+        -DCMAKE_TOOLCHAIN_FILE=Release/generators/conan_toolchain.cmake \
+        -DCMAKE_BUILD_TYPE=Release
+
+-- Using Conan toolchain: /home/nemo/Стажировка_InfoTecs/task-8_cpp-conan/build/Release/generators/conan_toolchain.cmake
+-- Conan toolchain: Defining architecture flag: -m64
+-- Conan toolchain: C++ Standard 17 with extensions ON
+-- Conan: Component target declared 'fmt::fmt'
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+-- Build files have been written to: /home/nemo/Стажировка_InfoTecs/task-8_cpp-conan/build
+
+Наконец билдим проект: cmake --build .
+
+[ 50%] Building CXX object CMakeFiles/main.dir/main.cpp.o
+[100%] Linking CXX executable main
+[100%] Built target main
+
+Запускаем: ./main
+
+Hello, World!
 
 Историю выполнения задания можно отследить, воспользовавшись репозиторием:
 
